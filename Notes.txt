@@ -6,7 +6,7 @@ json handling //Ebrahim
 General Functions //Like: stack(), search(), sort() //Abdelrahman Sameeh
 def friend_requests() //Ebrahim
 
-
+...
 //Farha
 class NavigationBar:
 	//using stack
