@@ -1,0 +1,81 @@
+//General code
+import
+
+json handling //Ebrahim
+
+General Functions //Like: stack(), search(), sort() //Abdelrahman Sameeh
+def friend_requests() //Ebrahim
+
+
+//Farha
+class NavigationBar:
+	//using stack
+	def Back()
+	def Forward()
+	//just call
+	def Home page()
+	def Friend Requests()
+	def My Profile()
+	def Logout()
+
+	
+//Mohamed Rafaat
+class User:
+	//both will call HomePage(mail).
+	def login()
+	def signup()
+	
+	
+//Mohamed Rafaat	
+class PersonProfile: //Base class
+	Name
+	profile photo
+	cover
+	bio
+	user_mail
+	
+	def user_details()
+	def friend_request_btn(user_mail)
+	def friends(user_mail)	   //with only friends validation
+	def view_posts(user_mail) //with only friends validation
+
+
+//Mohamed Rafaat
+class MyProfile(PersonProfile):	
+	user_mail = my_mail
+	
+	def add_post(user_mail)
+	
+	//Edit
+	def update_post(user_mail, p_id)
+	def delete_post(user_mail, p_id)
+	
+	def edit_profile_photo(user_mail)
+	def edit_cover_photo(user_mail)
+	def edit_bio(user_mail)
+	
+
+//Farha
+class Post:
+	//Person
+	Name
+	Profile Photo
+	
+	//Content
+	Text
+	Image(optional)
+	Date
+	
+	//Abdelrahman Sameeh
+	//Reactions 
+	Like (unlike)
+	Comment (Person - Edit/Delete - sort]) 
+	
+	view_post() //GUI of post
+
+
+//Ebrahim
+Home Page(Post):
+	add_post() //from MyProfile
+	view_posts() //with mail of each user
+
