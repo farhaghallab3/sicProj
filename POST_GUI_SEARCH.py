@@ -28,3 +28,4 @@ def sort_comments_by_likes(comments, ascending=True):
     sorted_comments = sorting_quick_sort(comments, key='likes', ascending=ascending)
     display_items(sorted_comments)
 
+
