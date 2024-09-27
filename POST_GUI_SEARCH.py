@@ -64,7 +64,7 @@ def search_user_by_name(users, target_name):
     def __init__(self):
         self.back_stack = Stack()
         self.forward_stack = Stack()
-        self.current_page = None
+         self.current_page = None
 
     def navigate_to(self, new_page):
         if self.current_page:
