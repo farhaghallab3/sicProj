@@ -103,6 +103,8 @@ class Post:
             print("No text entered for the post.")
 
 
+
+
 # Initialize the Tkinter root and run the application
 root = tk.Tk()
 app = Post(root)
