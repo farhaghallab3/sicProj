@@ -113,9 +113,9 @@ def create_custom_textbox(parent, x, y, width=30, height=3, font_size=14, backgr
         if (entry.get('1.0', tk.END).strip() == "") if not is_password else (
                 entry.get() == ""):
             entry.insert('1.0' if not is_password else 0, placeholder)
-            entry.config(fg='gray')
+            entry.config(fg='white')
 
-    entry.config(fg='gray')
+    entry.config(fg='white')
 
     entry.bind("<FocusIn>", on_click)
     entry.bind("<FocusOut>", on_focusout)

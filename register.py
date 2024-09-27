@@ -87,42 +87,6 @@ def create_gradient(canvas, width, height, start_color, end_color):
 
         canvas.create_line(x_start, y_start, x_end, y_end, fill=color)
 
-def create_custom_textbox(parent, x, y, width=30, height=3, font_size=14, background="#ffffff",
-                          placeholder="Enter your text here...",is_password=False):
-    if is_password==True:
-        entry = tk.Entry(parent, width=width, font=('Arial', font_size), bd=0, highlightthickness=0,
-                         background=background, show='*')
-    else:
-
-        entry = tk.Text(parent, width=width, height=height, font=('Arial', font_size), bd=0, highlightthickness=0,
-                        background=background)
-    entry.place(x=x, y=y)
-    entry.insert('1.0' if not is_password else 0, placeholder)
-
-
-    def on_click(event):
-        if (entry.get('1.0', tk.END).strip() == placeholder) if not is_password else (
-                entry.get() == placeholder):
-            entry.delete('1.0' if not is_password else 0, tk.END)
-            entry.config(fg='black')
-
-
-    def on_focusout(event):
-        if (entry.get('1.0', tk.END).strip() == "") if not is_password else (
-                entry.get() == ""):
-            entry.insert('1.0' if not is_password else 0, placeholder)
-            entry.config(fg='gray')
-
-    entry.config(fg='gray')
-
-
-    entry.bind("<FocusIn>", on_click)
-    entry.bind("<FocusOut>", on_focusout)
-
-    return entry
-
-
-
 def create_rounded_rectangle(x1, y1, x2, y2, radius=25, **kwargs):
     points = [x1 + radius, y1,
               x1 + radius, y1,
