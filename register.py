@@ -10,15 +10,12 @@ from PIL import Image, ImageTk
 
 # Read file, load data
 if os.path.exists("users.json"):
-    try:
-        with open("users.json", "r") as file:
-            users = json.load(file)
-    except json.JSONDecodeError:
-        print("Error parsing JSON file. Please check the file format.")
-        users = []
+    with open("users.json", 'r') as users_file:
+        users_list = json.load(users_file)
+
 else:
     print("User data file not found. Creating a new file...")
-    users = []
+    users_list = []
     with open("users.json", "w") as file:
         json.dump(users, file, indent=4)
 
@@ -175,7 +172,7 @@ def register_page():
                 errors.append("- Age must be a positive number.")
         except ValueError:
             errors.append("- Age must be a valid integer.")
-        if re_password_var != password_var:
+        if re_password_var.get() != password_var.get():
             errors.append("- password not match.")
 
         return errors
@@ -186,7 +183,7 @@ def register_page():
             error_message = "\n".join(errors)
             messagebox.showerror("Invalid Input", error_message)
             return
-        user_id = len(users) + 1
+        user_id = len(users_list) + 1
         user_data = {
             "ID": user_id,
             "username": name_var.get(),
@@ -195,7 +192,13 @@ def register_page():
             "Gender": gender_var.get(),
             "Governorate": governorate_var.get(),
             "Password": password_var.get(),
-            "Age": age_var.get()
+            "Age": age_var.get(),
+            "login_status": False,
+            "friends_counter":0,
+            "friends":[],
+            "profile_image":"",
+            "cover_image":"",
+            "bio":""
         }
 
         if not os.path.exists("users.json"):

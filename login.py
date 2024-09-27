@@ -189,11 +189,15 @@ def open_register():
     root.destroy()
     subprocess.run(["python", "register.py"])
 
+def open_profile():
+    root.destroy()
+    subprocess.run(["python", "profile.py"])
+
 def login_page():
 
     exit_button()
 
-    def validate_login(email_entry, password_entry):
+    def validate_login(email_entry, password_entry, users):
         email = email_entry.get("1.0", tk.END).strip() if isinstance(email_entry, tk.Text) else email_entry.get()
         password = password_entry.get()
         global user
@@ -203,6 +207,11 @@ def login_page():
                 current_user = user["username"]
                 message = f"Login successful, welcome {current_user}!"
                 messagebox.showinfo("Login Successful", message)
+                user["login_status"] = "true"
+
+                with open("users.json", "w") as file:
+                    json.dump(users, file, indent=4)
+                open_profile()
                 return
 
         messagebox.showerror("Login Failed", "Invalid username or password")
@@ -245,7 +254,7 @@ def login_page():
     remember_me_checkbox.place(x=470, y=435)
 
     create_rounded_button(canvas, form_x1 + 50, form_y2 - 100, 450, 50, "login",
-                          command=lambda: validate_login(email_entry, password_entry), bg_color="#5A6B6F")
+                          command=lambda: validate_login(email_entry, password_entry,users), bg_color="#5A6B6F")
 
     not_user_label = tk.Label(canvas, text="Don't have an account? ", fg="#000000", font=("Arial", 16))
     not_user_label.place(relx=0.365, rely=0.721)

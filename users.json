@@ -1,26 +1,37 @@
 [
     {
-        "ID": 1,
+        "ID": 2,
         "username": "mohamed",
-        "Phone Number": "01122441507",
-        "Email": "mohamed@yahoo.com",
+        "Phone Number": "01111111111",
+        "Email": "mohamed@gmail.com",
         "Gender": "male",
         "Governorate": "cairo",
         "Password": "mohamed",
         "Age": "20",
-        "National ID": "16891523467984",
-        "Cart": []
-    },
-    {
-        "ID": 2,
-        "username": "user1",
-        "Phone Number": "01010100101",
-        "Email": "user1@gmail.com",
-        "Gender": "male",
-        "Governorate": "giza",
-        "Password": "123456",
-        "Age": "21",
-        "National ID": "12345612345612",
-        "Cart": []
+        "login_status": "true",
+        "friends_counter": 0,
+        "friends": {
+            "friends": [
+                {"name": "Alice"},
+                {"name": "Bob"},
+                {"name": "Charlie"},
+                {"name": "David"},
+                {"name": "Eva"},
+                {"name": "Frank"},
+                {"name": "Grace"},
+                {"name": "Hannah"},
+                {"name": "Ian"},
+                {"name": "Jack"},
+                {"name": "Kate"},
+                {"name": "Leo"},
+                {"name": "Mia"},
+                {"name": "Nina"},
+                {"name": "Oscar"}
+            ]
+        },
+        "profile_image": "C:/Users/debsu/OneDrive/Desktop/RaaftV2.jpg",
+        "cover_image": "C:/Users/debsu/OneDrive/Desktop/Home Page 9_15_2024 6_03_49 PM.png",
+        "bio": "",
+        "Phone Numberr": "02222222222"
     }
 ]
