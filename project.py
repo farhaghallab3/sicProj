@@ -23,7 +23,7 @@ class Post:
         self.profile_image_canvas = tk.Canvas(profile_frame, width=50, height=50, bg="#34495E", highlightthickness=0)
         self.profile_image_canvas.grid(row=0, column=0, padx=10)
 
-        self.load_profile_image(r"C:\Users\farha\OneDrive\Desktop\sicProj\img\book.jpg")
+        self.load_profile_image(r"C:\Users\Abdel\PycharmProjects\sicProj\img\book.jpg")
 
         # Profile name label with new font style and color
         name_label = tk.Label(profile_frame, text="Farha Ghallab", font=("Arial", 14, "bold"), bg="#34495E", fg="white")
@@ -45,7 +45,7 @@ class Post:
         icon_frame = tk.Frame(self.root, bg="#2C3E50")
         icon_frame.pack(pady=5)
 
-        self.upload_icon = Image.open(r"C:\Users\farha\OneDrive\Desktop\sicProj\img\camera.jpg")
+        self.upload_icon = Image.open(r"C:\Users\Abdel\PycharmProjects\sicProj\img\camera.jpg")
         self.upload_icon = self.upload_icon.resize((50, 50))  # Resize photo
         self.upload_icon_photo = ImageTk.PhotoImage(self.upload_icon)
 
