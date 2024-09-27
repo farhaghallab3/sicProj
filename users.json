@@ -1,0 +1,26 @@
+[
+    {
+        "ID": 1,
+        "username": "mohamed",
+        "Phone Number": "01122441507",
+        "Email": "mohamed@yahoo.com",
+        "Gender": "male",
+        "Governorate": "cairo",
+        "Password": "mohamed",
+        "Age": "20",
+        "National ID": "16891523467984",
+        "Cart": []
+    },
+    {
+        "ID": 2,
+        "username": "user1",
+        "Phone Number": "01010100101",
+        "Email": "user1@gmail.com",
+        "Gender": "male",
+        "Governorate": "giza",
+        "Password": "123456",
+        "Age": "21",
+        "National ID": "12345612345612",
+        "Cart": []
+    }
+]
