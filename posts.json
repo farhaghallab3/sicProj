@@ -1,0 +1,180 @@
+{
+    "user1@example.com": [
+        {
+            "id": 1,
+            "content": {
+                "text": "Had a great day at the park!",
+                "image": "park_photo.jpg",
+                "date": "12-08-2024"
+            },
+            "reactions": {
+                "likes": 45,
+                "liked_by": ["friend1@example.com", "friend2@example.com"]
+            },
+            "comments": [
+                {
+                    "user": "friend1@example.com",
+                    "content": {
+                        "text": "Looks amazing!",
+                        "image": "friend1_comment.jpg",
+                        "date": "12-08-2024"
+                    },
+                    "reactions": {
+                        "likes": 0,
+                        "liked_by": []
+                    },
+                    "replies": [
+                        {
+                            "user": "user1@example.com",
+                            "content": {
+                                "text": "Thanks! It was a great time.",
+                                "image": "reply1.jpg",
+                                "date": "12-08-2024"
+                            },
+                            "reactions": {
+                                "likes": 2,
+                                "liked_by": ["friend1@example.com"]
+                            },
+                            "replies": []
+                        }
+                    ]
+                },
+                {
+                    "user": "friend2@example.com",
+                    "content": {
+                        "text": "Nice shot!",
+                        "image": "friend2_comment.jpg",
+                        "date": "12-08-2024"
+                    },
+                    "reactions": {
+                        "likes": 0,
+                        "liked_by": []
+                    },
+                    "replies": []
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "content": {
+                "text": "Enjoying my vacation at the beach.",
+                "image": "beach_photo.jpg",
+                "date": "02-02-2023"
+            },
+            "reactions": {
+                "likes": 78,
+                "liked_by": ["friend3@example.com", "friend4@example.com", "friend5@example.com"]
+            },
+            "comments": [
+                {
+                    "user": "friend3@example.com",
+                    "content": {
+                        "text": "Wow, beautiful place!",
+                        "image": "friend3_comment.jpg",
+                        "date": "02-02-2023"
+                    },
+                    "reactions": {
+                        "likes": 0,
+                        "liked_by": []
+                    },
+                    "replies": []
+                },
+                {
+                    "user": "friend4@example.com",
+                    "content": {
+                        "text": "So relaxing!",
+                        "image": "friend4_comment.jpg",
+                        "date": "02-02-2023"
+                    },
+                    "reactions": {
+                        "likes": 0,
+                        "liked_by": []
+                    },
+                    "replies": []
+                }
+            ]
+        }
+    ],
+    "user2@example.com": [
+        {
+            "id": 3,
+            "content": {
+                "text": "Hiking through the mountains today!",
+                "image": "mountain_hike.jpg",
+                "date": "10-10-2010"
+            },
+            "reactions": {
+                "likes": 52,
+                "liked_by": ["friend6@example.com", "friend7@example.com"]
+            },
+            "comments": [
+                {
+                    "user": "friend6@example.com",
+                    "content": {
+                        "text": "That view is incredible!",
+                        "image": "friend6_comment.jpg",
+                        "date": "10-10-2010"
+                    },
+                    "reactions": {
+                        "likes": 0,
+                        "liked_by": []
+                    },
+                    "replies": []
+                },
+                {
+                    "user": "friend7@example.com",
+                    "content": {
+                        "text": "Nature at its finest!",
+                        "image": "friend7_comment.jpg",
+                        "date": "10-10-2010"
+                    },
+                    "reactions": {
+                        "likes": 0,
+                        "liked_by": []
+                    },
+                    "replies": []
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "content": {
+                "text": "Delicious homemade pizza for dinner.",
+                "image": "pizza_dinner.jpg",
+                "date": "05-12-2024"
+            },
+            "reactions": {
+                "likes": 61,
+                "liked_by": ["friend8@example.com", "friend9@example.com", "friend10@example.com"]
+            },
+            "comments": [
+                {
+                    "user": "friend8@example.com",
+                    "content": {
+                        "text": "That looks so tasty!",
+                        "image": "friend8_comment.jpg",
+                        "date": "05-12-2024"
+                    },
+                    "reactions": {
+                        "likes": 0,
+                        "liked_by": []
+                    },
+                    "replies": []
+                },
+                {
+                    "user": "friend9@example.com",
+                    "content": {
+                        "text": "You should share the recipe!",
+                        "image": "friend9_comment.jpg",
+                        "date": "05-12-2024"
+                    },
+                    "reactions": {
+                        "likes": 0,
+                        "liked_by": []
+                    },
+                    "replies": []
+                }
+            ]
+        }
+    ]
+}
