@@ -6,8 +6,38 @@ from PIL import Image, ImageTk
 from datetime import datetime
 
 
+# def search_accounts_by_name(target_name):
+#
+#     file_name = 'users.json'
+#
+#     # Load user data from users.json
+#     if os.path.exists(file_name):
+#         with open(file_name, 'r') as f:
+#             data = json.load(f)
+#     else:
+#         print(f"Error: {file_name} not found.")
+#         return []
+#
+#     matching_users = []
+#
+#     # Search through the users based on the first or last name
+#     for email, user_info in data.items():
+#         full_name = f"{user_info['f name']} {user_info['l name']}"
+#
+#         if target_name.lower() in user_info['f name'].lower() or target_name.lower() in user_info['l name'].lower():
+#             matching_users.append({
+#                 "full_name": full_name,
+#                 "email": user_info['mail'],
+#                 "bio": user_info['bio'],
+#                 "job": user_info['job']
+#             })
+#
+#     return matching_users
+
+
+
 class Post:
-    def _init_(self, root):
+    def __init__(self, root):
         self.root = root
         self.root.geometry("500x600")
         self.root.configure(bg="#2C3E50")

@@ -11,16 +11,19 @@
                 {
                     "user": "user@example.com",
                     "content": {
-                        "text": "m,,",
+                        "text": "mml;nn",
                         "date": "28-09-2024"
                     },
-                    "likes": 0,
-                    "liked_by": [],
+                    "likes": 2,
+                    "liked_by": [
+                        "user@example.com",
+                        "user@example.com"
+                    ],
                     "replies": [
                         {
                             "user": "user@example.com",
                             "content": {
-                                "text": "l'",
+                                "text": "mm",
                                 "date": "28-09-2024"
                             },
                             "likes": 0,
@@ -29,7 +32,7 @@
                                 {
                                     "user": "user@example.com",
                                     "content": {
-                                        "text": "m,m",
+                                        "text": "mk",
                                         "date": "28-09-2024"
                                     },
                                     "likes": 0,
@@ -40,7 +43,7 @@
                         {
                             "user": "user@example.com",
                             "content": {
-                                "text": "mm",
+                                "text": "ll",
                                 "date": "28-09-2024"
                             },
                             "likes": 0,
@@ -606,6 +609,17 @@
             "liked_by": [],
             "comments": [],
             "id": 22
+        },
+        {
+            "content": {
+                "text": "mmm",
+                "image": null,
+                "date": "28-09-2024"
+            },
+            "likes": 0,
+            "liked_by": [],
+            "comments": [],
+            "id": 23
         }
     ]
 }
