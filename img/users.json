@@ -1,0 +1,50 @@
+{
+  "ebrahimwork102@gmail.com": {
+    "mail": "ebrahimwork102@gmail.com",
+    "password": "Qaz123456",
+    "f name": "Ebrahim",
+    "l name": "Khalil",
+    "d birth": "12-04-2002",
+    "Address": "Giza",
+    "school": "Shorouk Academy Faculty of Engineering",
+    "major": "Computer Engineering",
+    "job": "Backend Developer",
+    "bio": "أبطالها لحد ما نبطلها"
+  },
+  "MohamedRafaat120@gmail.com": {
+    "mail": "MohamedRaaft120@gmail.com",
+    "password": "Qaz123456",
+    "f name": "Mohamed",
+    "l name": "Raaft",
+    "d birth": "02-10-2004",
+    "Address": "Ain shams",
+    "school": "Ain shams Faculty of Stem Education",
+    "major": "Physics",
+    "job": "Software Engineer",
+    "bio": "Gui لعبتنا ومحدش ييجي ع سكتنا"
+  },
+   "AbdelrahamSameeh123@gmail.com": {
+    "mail": "AbdelrahamSameeh123@gmail.com",
+    "password": "Qwerty7890",
+    "f name": "Abdelraham",
+    "l name": "Sameeh",
+    "d birth": "14-06-2003",
+    "Address": "Heliopolis",
+    "school": "Cairo University Faculty of Engineering",
+    "major": "Mechanical Engineering",
+    "job": "Machine Learning Engineer",
+    "bio": "علمنا كتير ولسه بنتعلم"
+  },
+  "FarhaAhmed456@gmail.com": {
+    "mail": "FarhaAhmed456@gmail.com",
+    "password": "Asdf123456",
+    "f name": "Farha",
+    "l name": "Ahmed",
+    "d birth": "22-09-2001",
+    "Address": "Nasr City",
+    "school": "Ain Shams University Faculty of Computer Science",
+    "major": "Artificial Intelligence",
+    "job": "Data Scientist",
+    "bio": "الأمل هو طريق النجاح"
+  }
+}
