@@ -108,47 +108,76 @@ def create_rounded_rectangle(x1, y1, x2, y2, radius=25, **kwargs):
     return canvas.create_polygon(points, **kwargs, smooth=True)
 
 
-def create_rounded_button(canvas, x, y, width, height, text, command=None, radius=20, bg_color="#4CAF50",
-                          text_color="#ffffff"):
-    button_bg = []
+def create_rounded_button(canvas, x, y, width, height, text=None, icon=None, command=None, radius=25, bg="#CFB095",
+                          active_bg="#FFE4C4", text_color='#ffffff', cursor="hand2"):
+    # Create the rounded rectangle by drawing 4 arcs and 4 rectangles
+    points = [x + radius, y, x + width - radius, y, x + width, y, x + width, y + radius, x + width,
+              y + height - radius, x + width, y + height, x + width - radius, y + height,
+              x + radius, y + height, x, y + height, x, y + height - radius, x, y + radius, x, y]
 
+    button_shape = canvas.create_polygon(points, smooth=True, fill=bg, outline="", tags="button_shape")
 
-    button_bg.append(
-        canvas.create_arc(x, y, x + radius * 2, y + radius * 2, start=90, extent=90, fill=bg_color, outline=""))
+    # Add text on top of the rounded rectangle
+    if text:
+        text_label = canvas.create_text(x + width / 2, y + height / 2, text=text, fill=text_color,
+                                        font=("Arial", 12, "bold"), tags="button_text")
 
-    button_bg.append(
-        canvas.create_arc(x + width - radius * 2, y, x + width, y + radius * 2, start=0, extent=90, fill=bg_color,
-                          outline=""))
+    # Add icon if provided
+    if icon:
+        image = Image.open(icon)
+        image = image.resize((int(height * 0.6), int(height * 0.6)), Image.ANTIALIAS)  # Resize icon to fit the button
+        icon_image = ImageTk.PhotoImage(image)
+        canvas.create_image(x + width / 2, y + height / 2, image=icon_image, tags="button_icon")
+        canvas.image = icon_image  # Prevent image from being garbage collected
 
-    button_bg.append(
-        canvas.create_arc(x + width - radius * 2, y + height - radius * 2, x + width, y + height, start=270, extent=90,
-                          fill=bg_color, outline=""))
+    # Define hover effects and click behavior
+    def on_enter(event):
+        canvas.itemconfig(button_shape, fill=active_bg)
 
-    button_bg.append(
-        canvas.create_arc(x, y + height - radius * 2, x + radius * 2, y + height, start=180, extent=90, fill=bg_color,
-                          outline=""))
-
-
-    button_bg.append(canvas.create_rectangle(x + radius, y, x + width - radius, y + height, fill=bg_color,
-                                             outline=""))  # Center rectangle
-    button_bg.append(canvas.create_rectangle(x, y + radius, x + width, y + height - radius, fill=bg_color,
-                                             outline=""))  # Center vertical rectangle
-
-
-    button_text = canvas.create_text(x + width / 2, y + height / 2, text=text, fill=text_color,
-                                     font=('Arial', 12, 'bold'))
-
+    def on_leave(event):
+        canvas.itemconfig(button_shape, fill=bg)
 
     def on_click(event):
         if command:
             command()
 
-    for item in button_bg:
-        canvas.tag_bind(item, '<Button-1>', on_click)
+    # Bind events to the canvas object
+    canvas.tag_bind("button_shape", "<Enter>", on_enter)
+    canvas.tag_bind("button_shape", "<Leave>", on_leave)
+    canvas.tag_bind("button_shape", "<Button-1>", on_click)
 
-    canvas.tag_bind(button_text, '<Button-1>', on_click)
+    if text:
+        text_label = canvas.create_text(x + width / 2, y + height / 2, text=text, fill=text_color,
+                                        font=("Arial", 12, "bold"), tags=("button", "button_text"))
 
-    return button_bg, button_text
+        # Add icon if provided
+    if icon:
+        image = Image.open(icon)
+        image = image.resize((int(height * 0.6), int(height * 0.6)), Image.ANTIALIAS)  # Resize icon to fit the button
+        icon_image = ImageTk.PhotoImage(image)
+        canvas.create_image(x + width / 2, y + height / 2, image=icon_image, tags=("button", "button_icon"))
+        canvas.image = icon_image  # Prevent image from being garbage collected
+
+        # Define hover effects and click behavior
+
+    def on_enter(event):
+        canvas.itemconfig(button_shape, fill=active_bg)
+        canvas.config(cursor=cursor)
+
+    def on_leave(event):
+        canvas.itemconfig(button_shape, fill=bg)
+        canvas.config(cursor="")
+
+    def on_click(event):
+        if command:
+            command()
+
+        # Bind hover and click events for all parts of the button (shape, text, and icon)
+
+    for tag in ("button_shape", "button_text", "button_icon"):
+        canvas.tag_bind(tag, "<Enter>", on_enter)
+        canvas.tag_bind(tag, "<Leave>", on_leave)
+        canvas.tag_bind(tag, "<Button-1>", on_click)
 
 def register_page():
 
@@ -278,13 +307,12 @@ def register_page():
     age_entry.place(x=x1 + 460, y=y1 + 320)
 
 
-    register_button = tk.Button(canvas, text="Register", font=button_font, bg="#2f2727", fg="white", bd=0, padx=20,
-                                pady=10, command=register_user)
-    register_button.place(x=x1 + frame_width // 2 - 50, y=y1 + 360, anchor="center")
+    register_button = create_rounded_button(canvas,x1 + frame_width -190,y1 + 340,width=180 ,height=45, text="Register",command=register_user,radius=30, bg="#26609a", active_bg="white")
 
-    login_button = tk.Button(canvas, text="Go to Login", font=button_font, bg="#F1E9D2", fg="black", bd=0, padx=20,
-                             pady=10, command=login_page)
-    login_button.place(relx=0.95, rely=0.85, anchor="ne")
+
+    login_button = create_rounded_button(canvas,x1 + frame_width +50,y1 + 450,width=180 ,height=45, text="Go to Login",radius=30, bg="#ffffff", active_bg="white",
+                              text_color="#000000",command=login_page)
+
 
 
 

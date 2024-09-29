@@ -18,6 +18,14 @@ else:
     with open("users.json", "w") as file:
         json.dump(users, file, indent=4)
 
+if os.path.exists("friends.json"):
+    with open("friends.json", 'r') as file:
+        friends_data = json.load(file)
+else:
+    print("Friends data file not found.")
+    friends_data = {}
+
+
 icon_references = []
 
 root = tk.Tk()
@@ -248,21 +256,84 @@ class UserProfilePage:
         self.age_label.pack(pady=5)
 
         self.mid_frame=self.create_scrollable_frame(x=width // 2 - 300, y=280, width=600, height=400, bg='white', title='Posts')
-
-        # Create scrollable right frame for friends
-        self.right_frame = tk.Frame(self.canvas, bg='white')
-        self.right_frame_id = self.canvas.create_window(width-80, 120, anchor='nw', window=self.right_frame)
-        self.display_friends()
-    def display_friends(self):
-        for  friend_info in self.user_data['friends']['friends']:
-            friend_name = friend_info['name']
+        self.create_friends_frame()
 
 
-            # Create a button for each friend
-            friend_button = tk.Button(self.right_frame, text=friend_name,
-                                      command=lambda name=friend_name: self.open_friend_profile(name))
-            friend_button.pack(pady=5)
+    def create_friends_frame(self):
 
+        self.right_frame = self.create_scrollable_friends_frame(x=width - 270, y=180, width=240, height=400, bg='white')
+
+        user_friends = friends_data.get(user["Email"], {})
+
+        # Display friends in the scrollable frame
+        for friend_name, friend_email in user_friends.items():
+            self.add_friend_to_frame(self.right_frame, friend_name, friend_email)
+
+    def create_scrollable_friends_frame(self, x, y, width, height, bg):
+
+        scroll_canvas = tk.Canvas(self.canvas, bg=bg, width=width, height=height)
+        scroll_canvas_id = self.canvas.create_window(x, y, anchor='nw', window=scroll_canvas)
+
+
+        scrollbar = tk.Scrollbar(self.canvas, orient='vertical', command=scroll_canvas.yview)
+        scrollbar_id = self.canvas.create_window(x + width - 10, y, height=height, anchor='ne', window=scrollbar)
+        scroll_canvas.configure(yscrollcommand=scrollbar.set)
+
+
+        inner_frame = tk.Frame(scroll_canvas, bg=bg)
+        inner_frame.bind("<Configure>", lambda e: scroll_canvas.configure(scrollregion=scroll_canvas.bbox("all")))
+
+
+        scroll_canvas.create_window((0, 0), window=inner_frame, anchor='nw')
+
+        return inner_frame
+
+    def add_friend_to_frame(self, parent, friend_name, friend_email):
+
+        friend_frame = tk.Frame(parent, bg='lightgray', padx=5, pady=5)
+        friend_frame.pack(fill='x', pady=5)
+
+
+        friend_label = tk.Label(friend_frame, text=friend_name, font=("Arial", 12), anchor="w", bg='lightgray',
+                                cursor="hand2")
+        friend_label.pack(side="left", padx=10)
+
+
+        def open_friend_profile(event):
+            # Find friend's data from users list
+            for f_img in users:
+                if f_img["Email"] == friend_email:
+                    friend_data = f_img
+                    break
+            else:
+                friend_data = None
+
+
+            if friend_data:
+                read_only_profile_page = ReadOnlyProfilePage(self.canvas, friend_data)
+
+
+        friend_label.bind("<Button-1>", open_friend_profile)
+
+
+        for f_img in users:
+            if f_img["Email"] == friend_email:
+                friend_p_img = f_img["profile_image"]
+                placeholder_image = Image.open(friend_p_img)
+                placeholder_img = placeholder_image.resize((40, 40), Image.LANCZOS)
+                placeholder_photo = ImageTk.PhotoImage(placeholder_img)
+
+                profile_image_label = tk.Label(friend_frame, image=placeholder_photo, cursor="hand2")
+                profile_image_label.image = placeholder_photo
+                profile_image_label.pack(side="right", padx=10)
+                break
+        else:
+            placeholder_image = Image.new("RGB", (40, 40), color="gray")
+            placeholder_photo = ImageTk.PhotoImage(placeholder_image)
+
+            profile_image_label = tk.Label(friend_frame, image=placeholder_photo)
+            profile_image_label.image = placeholder_photo
+            profile_image_label.pack(side="right", padx=10)
     def create_scrollable_frame(self, x, y, width, height, bg, title):
         # Create a canvas to hold the scrolling frame
         scroll_canvas = tk.Canvas(self.canvas, bg=bg, width=width, height=height)
@@ -294,7 +365,8 @@ def login_page():
 class UserPage(UserProfilePage):
     def __init__(self, canvas, user_data):
         super().__init__(canvas, user_data)
-        self.create_editing_methods()
+        if isinstance(self, UserProfilePage) and not isinstance(self, ReadOnlyProfilePage):
+            self.create_editing_methods()
 
     def create_editing_methods(self):
         def edit_info():
@@ -394,8 +466,63 @@ class UserPage(UserProfilePage):
 
 
 class ReadOnlyProfilePage(UserProfilePage):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
+    def __init__(self, canvas, friend_data):
+        self.canvas = canvas
+        self.friend_data = friend_data
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Create navigation bar
+        self.nav_bar = tk.Frame(self.canvas, bg='gray', height=50)
+        self.nav_bar_id = self.canvas.create_window(0, 0, anchor='nw', width=width, height=50, window=self.nav_bar)
+
+        # Create cover photo
+        self.cover_frame = tk.Frame(self.canvas, bg='#ffffff', bd=0)
+        self.cover_frame_id = self.canvas.create_window(width // 2 - 400, 50, anchor='nw', window=self.cover_frame)
+
+        self.cover_image = Image.open(self.friend_data["cover_image"])
+        self.cover_image = self.cover_image.resize((800, 200), Image.LANCZOS)
+        self.cover_image = ImageTk.PhotoImage(self.cover_image)
+
+        self.cover_photo = tk.Label(self.cover_frame, image=self.cover_image)
+        self.cover_photo.image = self.cover_image
+        self.cover_photo.pack(padx=0, pady=0)
+
+        # Left frame for friend details
+        self.left_frame = tk.Frame(self.canvas, bg='white')
+        self.left_frame_id = self.canvas.create_window(10, 150, anchor='nw', window=self.left_frame)
+
+        # Profile image inside the left frame
+        self.profile_image = Image.open(self.friend_data["profile_image"])
+        self.profile_image = self.profile_image.resize((100, 100), Image.LANCZOS)
+        self.profile_image = ImageTk.PhotoImage(self.profile_image)
+
+        self.profile_image_label = tk.Label(self.left_frame, image=self.profile_image)
+        self.profile_image_label.image = self.profile_image
+        self.profile_image_label.pack(pady=5)
+
+        # Create labels for friend details inside the left frame
+        self.username_label = tk.Label(self.left_frame, text=f"{self.friend_data['username']}", font=("Arial", 16), anchor="center")
+        self.username_label.pack(pady=1)
+
+        self.email_label = tk.Label(self.left_frame, text=f"Email: {self.friend_data['Email']}")
+        self.email_label.pack(pady=5)
+
+        self.phone_number_label = tk.Label(self.left_frame, text=f"Phone Number: {self.friend_data['Phone Number']}")
+        self.phone_number_label.pack(pady=5)
+
+        self.gender_label = tk.Label(self.left_frame, text=f"Gender: {self.friend_data['Gender']}")
+        self.gender_label.pack(pady=5)
+
+        self.governorate_label = tk.Label(self.left_frame, text=f"Governorate: {self.friend_data['Governorate']}")
+        self.governorate_label.pack(pady=5)
+
+        self.age_label = tk.Label(self.left_frame, text=f"Age: {self.friend_data['Age']}")
+        self.age_label.pack(pady=5)
+
+        self.mid_frame = self.create_scrollable_frame(x=width // 2 - 300, y=280, width=600, height=400, bg='white', title='Friends')
+        self.create_friends_frame()
+
 
 
 def load_user_data(username):
@@ -406,16 +533,20 @@ def load_user_data(username):
                 return user
     return None
 
-# Find the logged-in user or allow login
-global user
+
+current_user = None
+logged_in = False
+
 for user in users:
     if user["login_status"] == "true":
-        global current_user
         current_user = user["username"]
-    else:
-        message = f"no loged user!"
-        messagebox.showerror("Error", message)
-        login_page()
+        logged_in = True
+        break
+
+if not logged_in:
+    message = f"no logged user!"
+    messagebox.showerror("Error", message)
+    login_page()
 
 
 user_data = load_user_data(current_user)
