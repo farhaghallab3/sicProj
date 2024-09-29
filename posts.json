@@ -1,36 +1,81 @@
 {
     "unknown": [
         {
+            "content": "Example Post Content",
+            "likes": 0,
+            "comments": [
+                {
+                    "text": "This is a comment",
+                    "date": "29-09-2024 12:34"
+                },
+                {
+                    "text": "Another comment",
+                    "date": "29-09-2024 12:35"
+                }
+            ]
+        }
+    ],
+    "test@example.com": [
+        {
             "content": {
-                "text": "jkjkjk",
+                "text": "hello",
                 "image": "C:/Users/farha/Downloads/No fuss snacks for March Madness.jpg",
-                "date": "27-09-2024"
+                "date": "29-09-2024",
+                "comments": [
+                    "eff"
+                ]
             },
             "id": 1
         },
         {
             "content": {
-                "text": "heloo",
+                "text": "ju",
+                "image": "C:/Users/farha/Downloads/Vintage Oversized Pleated Dress.jpg",
+                "date": "29-09-2024 04:04:16",
+                "likes": 0,
+                "comments": []
+            },
+            "id": 51
+        },
+        {
+            "content": {
+                "text": "ju",
+                "image": "C:/Users/farha/Downloads/Vintage Oversized Pleated Dress.jpg",
+                "date": "29-09-2024 04:04:38",
+                "likes": 0,
+                "comments": []
+            },
+            "id": 52
+        },
+        {
+            "content": {
+                "text": "hello",
+                "image": "C:/Users/farha/Downloads/5 Over-the-Top Refrigerators to Spice Up Your Kitchen.jpg",
+                "date": "29-09-2024 04:07:27",
+                "likes": 0,
+                "comments": []
+            },
+            "id": 53
+        },
+        {
+            "content": {
+                "text": "hello",
+                "image": "C:/Users/farha/Downloads/5 Over-the-Top Refrigerators to Spice Up Your Kitchen.jpg",
+                "date": "29-09-2024 04:07:42",
+                "likes": 0,
+                "comments": []
+            },
+            "id": 54
+        },
+        {
+            "content": {
+                "text": "koil",
                 "image": "C:/Users/farha/Downloads/No fuss snacks for March Madness.jpg",
-                "date": "27-09-2024"
+                "date": "29-09-2024 04:10:31",
+                "likes": 0,
+                "comments": []
             },
-            "id": 2
-        },
-        {
-            "content": {
-                "text": "kjkjk",
-                "image": null,
-                "date": "27-09-2024"
-            },
-            "id": 3
-        },
-        {
-            "content": {
-                "text": "alllooooo",
-                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-01-01 211634.png",
-                "date": "28-09-2024"
-            },
-            "id": 4
+            "id": 55
         }
     ]
 }
