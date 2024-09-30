@@ -1,17 +1,11 @@
 import tkinter as tk
 from datetime import datetime
-from tkinter import filedialog, messagebox, simpledialog
+from tkinter import filedialog
 from PIL import Image, ImageTk
 import json
 import os
 
-def get_user_info(email):
-    file_name = "users.json"  # Ensure your file name matches
-    if os.path.exists(file_name):
-        with open(file_name, 'r') as f:
-            data = json.load(f)
-        return data.get(email, {})  # This should return a dictionary
-    return {}
+
 
 class Post:
 
@@ -22,6 +16,13 @@ class Post:
         self.root.configure(bg="#2C3E50")  # Dark background
 
         self.post_text = tk.StringVar()  # To store the entered text
+        self.uploaded_image_path = None
+
+        # Create the navigation bar at the top
+        self.create_navigation_bar()
+
+        self.page_history = []
+        self.current_page_index = -1
 
         # Profile frame setup
         profile_frame = tk.Frame(self.root, bg="#34495E", padx=10, pady=10)
@@ -39,18 +40,18 @@ class Post:
         self.name_label.grid(row=0, column=1, sticky='w')
 
         # Post frame setup
-        post_frame = tk.Frame(self.root, bd=2, relief=tk.FLAT, padx=10, pady=10, bg="#ECF0F1")
-        post_frame.pack(pady=10, fill=tk.BOTH, expand=True)
+        self.post_frame = tk.Frame(self.root, bd=2, relief=tk.FLAT, padx=10, pady=10, bg="#ECF0F1")
+        self.post_frame.pack(pady=10, fill=tk.BOTH, expand=True)
 
         # Text entry box for writing a post
-        self.text_entry = tk.Entry(post_frame, textvariable=self.post_text, font=("Arial", 12), fg="#7F8C8D")
+        self.text_entry = tk.Entry(self.post_frame, textvariable=self.post_text, font=("Arial", 12), fg="#7F8C8D")
         self.text_entry.insert(0, "Write post here...")  # Default hint text
         self.text_entry.bind("<FocusIn>", self.clear_placeholder)
         self.text_entry.bind("<FocusOut>", self.add_placeholder)
         self.text_entry.config(relief=tk.FLAT, bg="#ECF0F1", highlightbackground="#BDC3C7", highlightthickness=1)
         self.text_entry.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.image_label = tk.Label(post_frame, bg="#ECF0F1")
+        self.image_label = tk.Label(self.post_frame, bg="#ECF0F1")
         self.image_label.pack(pady=10)
 
         # Remove Image button
@@ -78,19 +79,8 @@ class Post:
                                 font=("Arial", 12), relief=tk.FLAT, cursor="hand2", borderwidth=0)
         post_button.pack(pady=10, ipadx=10, ipady=5)
 
-        # Sort buttons
-        sort_frame = tk.Frame(self.root, bg="#2C3E50")
-        sort_frame.pack(pady=5)
-
-        asc_button = tk.Button(sort_frame, text="Sort Ascending", command=self.view_posts_ascending, bg="#1ABC9C", fg="white")
-        asc_button.pack(side=tk.LEFT, padx=5)
-
-        desc_button = tk.Button(sort_frame, text="Sort Descending", command=self.view_posts_descending, bg="#E74C3E", fg="white")
-        desc_button.pack(side=tk.LEFT, padx=5)
-
         # After login, set profile details
         self.set_user_profile(user_email)
-
     def load_profile_image(self, image_path):
         try:
             img = Image.open(image_path)
@@ -146,16 +136,6 @@ class Post:
         self.uploaded_img = ImageTk.PhotoImage(uploaded_img)
         self.image_label.config(image=self.uploaded_img)
 
-    def load_posts_from_json(self):
-        if os.path.exists("posts.json"):
-            with open("posts.json", 'r') as f:
-                data = json.load(f)
-                for user_posts in data.values():
-                    for post in user_posts:
-                        # Ensure each post has a comments key
-                        if "comments" not in post["content"]:
-                            post["content"]["comments"] = []  # Initialize comments if not present
-
     def remove_image(self):
         self.image_label.config(image="")  # Clear the image label
         self.uploaded_image_path = None  # Remove image
@@ -164,10 +144,10 @@ class Post:
     def post_content(self):
         post_text = self.post_text.get().strip()  # Get the entered text
         image_path = getattr(self, 'uploaded_image_path', None)  # Check if an image has been uploaded
-
         user_email = self.user_email  # Access the email directly
 
         if post_text and post_text != "Write post here...":
+            user_details = self.get_user_details(user_email)
             post_data = {
                 "content": {
                     "text": post_text,
@@ -175,10 +155,15 @@ class Post:
                     "date": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
                     "likes": 0,
                     "comments": []
+                },
+                "user": {
+                    "name": user_details.get("name", "Unknown User"),
+                    "profile_image": user_details.get("profile_image",
+                                                      r"C:\Users\farha\OneDrive\Desktop\sicProj\img\book.jpg")
                 }
             }
             self.save_post_to_json(post_data, user_email)  # Save the post to JSON
-            self.view_posts()  # Refresh the post view
+            self.view_posts()  # Switch to view posts after creating
         else:
             print("No text entered for the post.")
 
@@ -201,162 +186,262 @@ class Post:
         with open(file_name, 'w') as f:
             json.dump(data, f, indent=4)
 
-        print(f"Post saved to {file_name}")
+        print(f"Post saved to {file_name}: {post_data}")
 
-    def create_post(self, post_content, image_path=None):
-        # Increment a post ID, could also be more sophisticated
-        post_id = self.generate_post_id()
-        post_date = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    def create_navigation_bar(self):
+        nav_bar = tk.Frame(self.root, bg="#2C3E50", padx=10, pady=5)
+        nav_bar.pack(fill=tk.X)
 
-        new_post = {
-            "id": post_id,
-            "content": {
-                "text": post_content,
-                "date": post_date,
-                "image": image_path,
-                "likes": 0,  # Initialize likes
-                "comments": []  # Initialize comments list
-            }
-        }
+        back_button = tk.Button(nav_bar, text="Back", bg="#1ABC9C", fg="white", font=("Arial", 10),
+                                relief=tk.FLAT, cursor="hand2", command=self.go_back)
+        back_button.pack(side=tk.LEFT, padx=5)
 
-        # Load existing posts
-        if os.path.exists("posts.json"):
-            with open("posts.json", 'r') as f:
+        forward_button = tk.Button(nav_bar, text="Forward", bg="#1ABC9C", fg="white", font=("Arial", 10),
+                                   relief=tk.FLAT, cursor="hand2", command=self.go_forward)
+        forward_button.pack(side=tk.LEFT, padx=5)
+
+        home_button = tk.Button(nav_bar, text="My Home", bg="#1ABC9C", fg="white", font=("Arial", 10),
+                                relief=tk.FLAT, cursor="hand2", command=self.go_home)
+        home_button.pack(side=tk.LEFT, padx=5)
+
+        profile_button = tk.Button(nav_bar, text="My Profile", bg="#1ABC9C", fg="white", font=("Arial", 10),
+                                   relief=tk.FLAT, cursor="hand2", command=self.go_profile)
+        profile_button.pack(side=tk.LEFT, padx=5)
+
+        request_friend_button = tk.Button(nav_bar, text="My Request Friend", bg="#1ABC9C", fg="white",
+                                          font=("Arial", 10),
+                                          relief=tk.FLAT, cursor="hand2", command=self.request_friend)
+        request_friend_button.pack(side=tk.LEFT, padx=5)
+
+        logout_button = tk.Button(nav_bar, text="Log Out", bg="#E74C3C", fg="white", font=("Arial", 10),
+                                  relief=tk.FLAT, cursor="hand2", command=self.log_out)
+        logout_button.pack(side=tk.RIGHT, padx=5)
+
+    def navigate_to_page(self, page_function):
+        """Helper function to navigate to a specific page."""
+        print(f"Navigating to {page_function.__name__}")
+
+        # Clear current widgets
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        # Recreate navigation bar and load the target page
+        self.create_navigation_bar()
+        page_function()  # Call the page function
+
+    def go_back(self):
+        if self.current_page_index > 0:
+            print("Going Back")
+            self.current_page_index -= 1
+            self.navigate_to_page(self.page_history[self.current_page_index])
+        else:
+            print("Cannot go back further")
+
+    def go_forward(self):
+        if self.current_page_index < len(self.page_history) - 1:
+            self.current_page_index += 1
+            self.navigate_to_page(self.page_history[self.current_page_index])
+
+
+
+    def go_home(self):
+        self.add_to_history(self.go_home)
+        self.navigate_to_page(self.view_posts())
+
+    def go_profile(self):
+        self.add_to_history(self.go_profile)
+        self.navigate_to_page(self.view_posts())
+
+
+    def request_friend(self):
+        self.add_to_history(self.go_profile)
+        self.navigate_to_page(self.view_posts())
+
+    def log_out(self):
+        self.add_to_history(self.log_out)
+        self.navigate_to_page(self.view_posts())
+
+    def add_to_history(self, page_function):
+        """Add the current page function to history and update the index."""
+        if self.current_page_index < len(self.page_history) - 1:
+            # Clear forward history if the user navigated backward
+            self.page_history = self.page_history[:self.current_page_index + 1]
+
+        self.page_history.append(page_function)
+        self.current_page_index = len(self.page_history) - 1  # Update index to new page
+
+    def view_posts(self):
+
+        self.add_to_history(self.view_posts)
+        # Clear the current window and remove the post creation elements
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        # Recreate the navigation bar at the top
+        self.create_navigation_bar()  # This will add the navigation bar
+
+        # Create a canvas for scrolling
+        self.canvas = tk.Canvas(self.root, bg="#ECF0F1")
+        self.scrollbar = tk.Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = tk.Frame(self.canvas)
+
+        # Configure the scrollable frame
+        self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+
+        # Create a window in the canvas for the scrollable frame
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        # Pack the canvas and scrollbar
+        self.scrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side="left", fill="both", expand=True)
+
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        # Show user posts
+        file_name = "posts.json"
+        if os.path.exists(file_name):
+            with open(file_name, 'r') as f:
+                data = json.load(f)
+
+            # Collect all posts
+            posts = []
+            for user_posts in data.values():
+                posts.extend(user_posts)
+
+            # Filter out invalid post formats
+            valid_posts = []
+            for post in posts:
+                if isinstance(post, dict) and "content" in post and "date" in post["content"]:
+                    valid_posts.append(post)
+                else:
+                    print(f"Invalid post format: {post}")
+
+            # Sort valid posts by date (latest first)
+            valid_posts.sort(key=lambda x: x["content"]["date"], reverse=True)
+
+            # Display each valid post
+            for post in valid_posts:
+                self.display_post(post)
+
+    def display_post(self, post):
+        # Create a frame for each post
+        post_frame = tk.Frame(self.scrollable_frame, bd=2, relief=tk.GROOVE, padx=10, pady=10, bg="#ECF0F1")
+        post_frame.pack(pady=10, fill=tk.BOTH, expand=True)
+
+        # Display user name
+        user_name_label = tk.Label(post_frame, text=post["user"]["name"], font=("Arial", 12, "bold"),
+                                   bg="#ECF0F1", fg="black")
+        user_name_label.pack(anchor="w")
+
+        # Display user profile image
+        if post["user"].get("profile_image"):
+            user_profile_image = Image.open(post["user"]["profile_image"])
+            user_profile_image = user_profile_image.resize((30, 30))  # Resize for display
+            user_profile_image = ImageTk.PhotoImage(user_profile_image)
+            user_profile_image_label = tk.Label(post_frame, image=user_profile_image, bg="#ECF0F1")
+            user_profile_image_label.image = user_profile_image  # Keep reference to avoid garbage collection
+            user_profile_image_label.pack(side=tk.LEFT, padx=(5, 10))
+
+        # Display post text
+        post_label = tk.Label(post_frame, text=post["content"]["text"], font=("Arial", 12), bg="#ECF0F1", fg="black")
+        post_label.pack(pady=(0, 10))
+
+        # Display post image if exists
+        if post["content"].get("image"):
+            post_image = Image.open(post["content"]["image"])
+            post_image = post_image.resize((100, 100))
+            post_image = ImageTk.PhotoImage(post_image)
+            image_label = tk.Label(post_frame, image=post_image, bg="#ECF0F1")
+            image_label.image = post_image  # Keep reference to avoid garbage collection
+            image_label.pack(pady=5)
+
+        # Display post date
+        date_label = tk.Label(post_frame, text=post["content"]["date"], font=("Arial", 8), bg="#ECF0F1", fg="gray")
+        date_label.pack(pady=5)
+
+        # Display likes
+        likes_label = tk.Label(post_frame, text=f"Likes: {post['content']['likes']}", font=("Arial", 10, "bold"),
+                               bg="#ECF0F1", fg="#2980B9")
+        likes_label.pack(pady=5)
+
+        # Like button implementation
+        like_button = tk.Button(post_frame, text="Like", bg="gray", fg="white",
+                                command=lambda: self.toggle_like(post, likes_label))
+        like_button.pack(pady=5)
+
+        # Comment section
+        comment_frame = tk.Frame(post_frame, bg="#ECF0F1")
+        comment_frame.pack(fill=tk.BOTH)
+
+        # Comment entry field
+        comment_entry = tk.Entry(comment_frame, font=("Arial", 10), width=40)
+        comment_entry.pack(side=tk.LEFT, padx=5)
+
+        comment_button = tk.Button(comment_frame, text="Comment",
+                                   command=lambda: self.add_comment(post["id"], comment_entry.get()), bg="#2980B9",
+                                   fg="white")
+        comment_button.pack(side=tk.LEFT)
+
+        # Display comments
+        if post["content"]["comments"]:
+            for comment in post["content"]["comments"]:
+                comment_label = tk.Label(post_frame, text=comment, font=("Arial", 10), bg="#ECF0F1", fg="black")
+                comment_label.pack(anchor="w")
+
+    def add_comment(self, post_id, comment_text):
+        if comment_text:
+            file_name = "posts.json"
+            if os.path.exists(file_name):
+                with open(file_name, 'r') as f:
+                    data = json.load(f)
+
+                for user_posts in data.get(self.user_email, []):
+                    if user_posts["id"] == post_id:
+                        user_posts["content"]["comments"].append(comment_text)
+                        break
+
+                with open(file_name, 'w') as f:
+                    json.dump(data, f, indent=4)
+
+            self.view_posts()  # Refresh the posts after adding a comment
+        else:
+            print("No comment entered.")
+
+    def toggle_like(self, post, likes_label):
+        # Toggle like state
+        if post["content"]["likes"] % 2 == 0:  # If currently liked (even number of likes)
+            post["content"]["likes"] += 1  # Increment likes
+            likes_label.config(text=f"Likes: {post['content']['likes']}")
+            likes_label.master.children['!button'].config(bg="blue")  # Change button color to blue
+        else:
+            post["content"]["likes"] -= 1  # Decrement likes
+            likes_label.config(text=f"Likes: {post['content']['likes']}")
+            likes_label.master.children['!button'].config(bg="gray")  # Change button color back to gray
+
+        self.save_posts()  # Save updated likes count
+
+    def save_posts(self):
+        file_name = "posts.json"
+        if os.path.exists(file_name):
+            with open(file_name, 'r') as f:
                 data = json.load(f)
         else:
             data = {}
 
-        # Save the new post under the user's email
-        user_email = self.user_email
-        if user_email not in data:
-            data[user_email] = []
-        data[user_email].append(new_post)
-
-        self.save_posts_to_json(data)
-
-    def view_posts(self):
-        self.clear_post_view()
-        file_name = "posts.json"
-        if os.path.exists(file_name):
-            with open(file_name, 'r') as f:
-                data = json.load(f)
-
-            user_posts = data.get(self.user_email, [])
+        # Update posts in JSON file
+        for user_posts in data.values():
             for post in user_posts:
-                self.display_post(post["content"], post["id"])
+                # Find and update the post
+                if post["id"] == post["id"]:
+                    post["content"]["likes"] = post["content"]["likes"]
 
-
-
-    def clear_post_view(self):
-        for widget in self.root.winfo_children():
-            if isinstance(widget, tk.Frame) and widget != self.root.winfo_children()[0]:  # Keep profile frame
-                widget.destroy()
-
-    def display_post(self, post_content, post_id):
-        post_frame = tk.Frame(self.root, bg="#34495E", padx=10, pady=10)
-        post_frame.pack(pady=5, fill=tk.X)
-
-        post_text = post_content["text"]
-        post_date = post_content["date"]
-        post_image_path = post_content["image"]
-
-        post_label = tk.Label(post_frame, text=post_text, bg="#34495E", fg="white", wraplength=400, justify=tk.LEFT)
-        post_label.pack()
-
-        date_label = tk.Label(post_frame, text=post_date, bg="#34495E", fg="white", font=("Arial", 8))
-        date_label.pack()
-
-        if post_image_path:
-            img = Image.open(post_image_path)
-            img = img.resize((100, 100))
-            img = ImageTk.PhotoImage(img)
-            image_label = tk.Label(post_frame, image=img, bg="#34495E")
-            image_label.image = img  # Keep a reference
-            image_label.pack()
-
-        # Make sure to access likes correctly
-        likes_count = post_content.get("likes", 0)  # Use .get() to avoid KeyError
-        likes_label = tk.Label(post_frame, text=f"Likes: {likes_count}", bg="#34495E", fg="white")
-        likes_label.pack(side=tk.LEFT, padx=5)
-
-        # Comment button
-        comment_button = tk.Button(post_frame, text="Comment", command=lambda: self.comment_on_post(post_id),
-                                   bg="#1ABC9C", fg="white")
-        comment_button.pack(side=tk.LEFT, padx=5)
-
-        # Display comments
-        comments = post_content.get("comments", [])
-        for comment in comments:
-            comment_label = tk.Label(post_frame, text=comment, bg="#34495E", fg="white", wraplength=400,
-                                     justify=tk.LEFT)
-            comment_label.pack()
-
-    def like_post(self, post_id):
-        file_name = "posts.json"
-        if os.path.exists(file_name):
-            with open(file_name, 'r') as f:
-                data = json.load(f)
-
-            for user_posts in data.values():
-                for post in user_posts:
-                    if post.get("id") == post_id:
-                        post["content"]["likes"] += 1  # Increment the likes count
-                        self.save_posts_to_json(data)  # Save changes
-                        self.view_posts()  # Refresh post view
-                        return
-        print("Post not found.")
-
-    def comment_on_post(self, post_id):
-        comment = simpledialog.askstring("Comment", "Enter your comment:")
-        if comment:
-            # Load posts first to find the correct post
-            with open("posts.json", 'r') as f:
-                data = json.load(f)
-
-            user_email = self.user_email
-            for post in data.get(user_email, []):
-                if post["id"] == post_id:
-                    # Ensure the comments list exists
-                    if "comments" not in post["content"]:
-                        post["content"]["comments"] = []  # Initialize if missing
-
-                    post["content"]["comments"].append(comment)  # Add the comment
-
-                    # Save the updated post back to JSON
-                    self.save_posts_to_json(data)
-                    break
-
-    def save_posts_to_json(self, data):
-        with open("posts.json", 'w') as f:
+        with open(file_name, 'w') as f:
             json.dump(data, f, indent=4)
 
-    def view_posts_ascending(self):
-        self.clear_post_view()
-        file_name = "posts.json"
-        if os.path.exists(file_name):
-            with open(file_name, 'r') as f:
-                data = json.load(f)
 
-            user_posts = data.get(self.user_email, [])
-            sorted_posts = sorted(user_posts, key=lambda x: datetime.strptime(x["content"]["date"], "%d-%m-%Y %H:%M:%S"))
-            for post in sorted_posts:
-                self.display_post(post["content"], post["id"])
 
-    def view_posts_descending(self):
-        self.clear_post_view()
-        file_name = "posts.json"
-        if os.path.exists(file_name):
-            with open(file_name, 'r') as f:
-                data = json.load(f)
-
-            user_posts = data.get(self.user_email, [])
-            sorted_posts = sorted(user_posts, key=lambda x: datetime.strptime(x["content"]["date"], "%d-%m-%Y %H:%M:%S"), reverse=True)
-            for post in sorted_posts:
-                self.display_post(post["content"], post["id"])
-
-# Sample main application setup
 if __name__ == "__main__":
     root = tk.Tk()
-    user_email = {"mail": "test@example.com"}  # Replace with actual user email during login
+    user_email = {"mail": "test@example.com"}  # Simulating logged in user
     app = Post(root, user_email)
     root.mainloop()
