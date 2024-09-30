@@ -1,180 +1,315 @@
 {
-    "user1@example.com": [
-        {
-            "id": 1,
-            "content": {
-                "text": "Had a great day at the park!",
-                "image": "park_photo.jpg",
-                "date": "12-08-2024"
-            },
-            "reactions": {
-                "likes": 45,
-                "liked_by": ["friend1@example.com", "friend2@example.com"]
-            },
-            "comments": [
-                {
-                    "user": "friend1@example.com",
-                    "content": {
-                        "text": "Looks amazing!",
-                        "image": "friend1_comment.jpg",
-                        "date": "12-08-2024"
-                    },
-                    "reactions": {
-                        "likes": 0,
-                        "liked_by": []
-                    },
-                    "replies": [
-                        {
-                            "user": "user1@example.com",
-                            "content": {
-                                "text": "Thanks! It was a great time.",
-                                "image": "reply1.jpg",
-                                "date": "12-08-2024"
-                            },
-                            "reactions": {
-                                "likes": 2,
-                                "liked_by": ["friend1@example.com"]
-                            },
-                            "replies": []
-                        }
-                    ]
-                },
-                {
-                    "user": "friend2@example.com",
-                    "content": {
-                        "text": "Nice shot!",
-                        "image": "friend2_comment.jpg",
-                        "date": "12-08-2024"
-                    },
-                    "reactions": {
-                        "likes": 0,
-                        "liked_by": []
-                    },
-                    "replies": []
-                }
-            ]
-        },
-        {
-            "id": 2,
-            "content": {
-                "text": "Enjoying my vacation at the beach.",
-                "image": "beach_photo.jpg",
-                "date": "02-02-2023"
-            },
-            "reactions": {
-                "likes": 78,
-                "liked_by": ["friend3@example.com", "friend4@example.com", "friend5@example.com"]
-            },
-            "comments": [
-                {
-                    "user": "friend3@example.com",
-                    "content": {
-                        "text": "Wow, beautiful place!",
-                        "image": "friend3_comment.jpg",
-                        "date": "02-02-2023"
-                    },
-                    "reactions": {
-                        "likes": 0,
-                        "liked_by": []
-                    },
-                    "replies": []
-                },
-                {
-                    "user": "friend4@example.com",
-                    "content": {
-                        "text": "So relaxing!",
-                        "image": "friend4_comment.jpg",
-                        "date": "02-02-2023"
-                    },
-                    "reactions": {
-                        "likes": 0,
-                        "liked_by": []
-                    },
-                    "replies": []
-                }
-            ]
-        }
-    ],
-    "user2@example.com": [
-        {
-            "id": 3,
-            "content": {
-                "text": "Hiking through the mountains today!",
-                "image": "mountain_hike.jpg",
-                "date": "10-10-2010"
-            },
-            "reactions": {
-                "likes": 52,
-                "liked_by": ["friend6@example.com", "friend7@example.com"]
-            },
-            "comments": [
-                {
-                    "user": "friend6@example.com",
-                    "content": {
-                        "text": "That view is incredible!",
-                        "image": "friend6_comment.jpg",
-                        "date": "10-10-2010"
-                    },
-                    "reactions": {
-                        "likes": 0,
-                        "liked_by": []
-                    },
-                    "replies": []
-                },
-                {
-                    "user": "friend7@example.com",
-                    "content": {
-                        "text": "Nature at its finest!",
-                        "image": "friend7_comment.jpg",
-                        "date": "10-10-2010"
-                    },
-                    "reactions": {
-                        "likes": 0,
-                        "liked_by": []
-                    },
-                    "replies": []
-                }
-            ]
-        },
-        {
-            "id": 4,
-            "content": {
-                "text": "Delicious homemade pizza for dinner.",
-                "image": "pizza_dinner.jpg",
-                "date": "05-12-2024"
-            },
-            "reactions": {
-                "likes": 61,
-                "liked_by": ["friend8@example.com", "friend9@example.com", "friend10@example.com"]
-            },
-            "comments": [
-                {
-                    "user": "friend8@example.com",
-                    "content": {
-                        "text": "That looks so tasty!",
-                        "image": "friend8_comment.jpg",
-                        "date": "05-12-2024"
-                    },
-                    "reactions": {
-                        "likes": 0,
-                        "liked_by": []
-                    },
-                    "replies": []
-                },
-                {
-                    "user": "friend9@example.com",
-                    "content": {
-                        "text": "You should share the recipe!",
-                        "image": "friend9_comment.jpg",
-                        "date": "05-12-2024"
-                    },
-                    "reactions": {
-                        "likes": 0,
-                        "liked_by": []
-                    },
-                    "replies": []
-                }
-            ]
-        }
-    ]
+  "ahmed.ibrahim@gmail.com": [
+    {
+      "id": 1,
+      "content": {
+        "text": "The view is breathtaking!",
+        "image": "ahmed_ibrahim_post_1.jpg",
+        "date": "15-07-2024"
+      },
+      "reactions": {
+        "likes": 45,
+        "liked_by": [
+          "omar.tarek@hotmail.com",
+          "karim.hassan22@outlook.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 2,
+      "content": {
+        "text": "Had a fantastic time with friends.",
+        "image": "ahmed_ibrahim_post_2.jpg",
+        "date": "22-06-2024"
+      },
+      "reactions": {
+        "likes": 29,
+        "liked_by": [
+          "amira.fathy123@gmail.com",
+          "mona.saleh@yahoo.com",
+          "tarek.ismail88@gmail.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 3,
+      "content": {
+        "text": "What an unforgettable experience!",
+        "image": "ahmed_ibrahim_post_3.jpg",
+        "date": "02-08-2023"
+      },
+      "reactions": {
+        "likes": 82,
+        "liked_by": [
+          "hany.mostafa@gmail.com",
+          "nadia.adel90@gmail.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 4,
+      "content": {
+        "text": "Just enjoying a quiet day.",
+        "image": "ahmed_ibrahim_post_4.jpg",
+        "date": "11-05-2024"
+      },
+      "reactions": {
+        "likes": 59,
+        "liked_by": [
+          "ebrahimwork102@gmail.com",
+          "MohamedRafaat120@gmail.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 5,
+      "content": {
+        "text": "Discovering new parts of the city!",
+        "image": "ahmed_ibrahim_post_5.jpg",
+        "date": "20-09-2023"
+      },
+      "reactions": {
+        "likes": 34,
+        "liked_by": [
+          "fouad.ali@hotmail.com",
+          "yasmin.elsayed@yahoo.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 6,
+      "content": {
+        "text": "What a lovely day outside.",
+        "image": "ahmed_ibrahim_post_6.jpg",
+        "date": "30-01-2023"
+      },
+      "reactions": {
+        "likes": 72,
+        "liked_by": [
+          "karim.hassan22@outlook.com",
+          "mohamed.salah97@hotmail.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 7,
+      "content": {
+        "text": "Nature is truly amazing!",
+        "image": "ahmed_ibrahim_post_7.jpg",
+        "date": "18-04-2024"
+      },
+      "reactions": {
+        "likes": 40,
+        "liked_by": [
+          "fouad.ali@hotmail.com",
+          "amira.fathy123@gmail.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 8,
+      "content": {
+        "text": "A day to remember!",
+        "image": "ahmed_ibrahim_post_8.jpg",
+        "date": "09-06-2024"
+      },
+      "reactions": {
+        "likes": 60,
+        "liked_by": [
+          "nadia.adel90@gmail.com",
+          "zeinab.ali@mail.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 9,
+      "content": {
+        "text": "Feeling proud of my achievements.",
+        "image": "ahmed_ibrahim_post_9.jpg",
+        "date": "25-08-2024"
+      },
+      "reactions": {
+        "likes": 50,
+        "liked_by": [
+          "karim.hassan22@outlook.com",
+          "fouad.ali@hotmail.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 10,
+      "content": {
+        "text": "Creating wonderful memories!",
+        "image": "ahmed_ibrahim_post_10.jpg",
+        "date": "03-09-2023"
+      },
+      "reactions": {
+        "likes": 35,
+        "liked_by": [
+          "MohamedRafaat120@gmail.com",
+          "yasmin.elsayed@yahoo.com"
+        ]
+      },
+      "comments": []
+    }
+  ],
+  "mohamed.salah97@hotmail.com": [
+    {
+      "id": 1,
+      "content": {
+        "text": "Having a blast at the beach.",
+        "image": "mohamed_salah_post_1.jpg",
+        "date": "23-08-2023"
+      },
+      "reactions": {
+        "likes": 57,
+        "liked_by": [
+          "ahmed.ibrahim@gmail.com",
+          "yasmin.elsayed@yahoo.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 2,
+      "content": {
+        "text": "Captivated by this sunset!",
+        "image": "mohamed_salah_post_2.jpg",
+        "date": "04-06-2024"
+      },
+      "reactions": {
+        "likes": 42,
+        "liked_by": [
+          "zeinab.ali@mail.com",
+          "karim.hassan22@outlook.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 3,
+      "content": {
+        "text": "A lovely family day.",
+        "image": "mohamed_salah_post_3.jpg",
+        "date": "14-05-2023"
+      },
+      "reactions": {
+        "likes": 28,
+        "liked_by": [
+          "amira.fathy123@gmail.com",
+          "tarek.ismail88@gmail.com"
+        ]
+      },
+      "comments": []
+    }
+  ],
+  "omar.tarek@hotmail.com": [
+    {
+      "id": 1,
+      "content": {
+        "text": "Relaxing at the seaside.",
+        "image": "mohamed_salah_post_1.jpg",
+        "date": "23-08-2023"
+      },
+      "reactions": {
+        "likes": 58,
+        "liked_by": [
+          "ahmed.ibrahim@gmail.com",
+          "yasmin.elsayed@yahoo.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 2,
+      "content": {
+        "text": "Basking in this gorgeous sunset!",
+        "image": "mohamed_salah_post_2.jpg",
+        "date": "04-06-2024"
+      },
+      "reactions": {
+        "likes": 41,
+        "liked_by": [
+          "zeinab.ali@mail.com",
+          "karim.hassan22@outlook.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 3,
+      "content": {
+        "text": "Cherishing moments with family.",
+        "image": "mohamed_salah_post_3.jpg",
+        "date": "14-05-2023"
+      },
+      "reactions": {
+        "likes": 32,
+        "liked_by": [
+          "amira.fathy123@gmail.com",
+          "tarek.ismail88@gmail.com"
+        ]
+      },
+      "comments": []
+    }
+  ],
+  "ebrahimwork102@gmail.com": [
+    {
+      "id": 1,
+      "content": {
+        "text": "Soaking up the sun at the beach.",
+        "image": "mohamed_salah_post_1.jpg",
+        "date": "23-08-2023"
+      },
+      "reactions": {
+        "likes": 56,
+        "liked_by": [
+          "ahmed.ibrahim@gmail.com",
+          "yasmin.elsayed@yahoo.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 2,
+      "content": {
+        "text": "Admiring this stunning sunset!",
+        "image": "mohamed_salah_post_2.jpg",
+        "date": "04-06-2024"
+      },
+      "reactions": {
+        "likes": 39,
+        "liked_by": [
+          "zeinab.ali@mail.com",
+          "karim.hassan22@outlook.com"
+        ]
+      },
+      "comments": []
+    },
+    {
+      "id": 3,
+      "content": {
+        "text": "Spent quality time with loved ones.",
+        "image": "mohamed_salah_post_3.jpg",
+        "date": "14-05-2023"
+      },
+      "reactions": {
+        "likes": 31,
+        "liked_by": [
+          "amira.fathy123@gmail.com",
+          "tarek.ismail88@gmail.com"
+        ]
+      },
+      "comments": []
+    }
+  ]
 }
