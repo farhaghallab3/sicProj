@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from NewsFeedLogic import view_post, friend_posts_read
-from POST_GUI_SEARCH import Post
+from TestJson import Post
 
 temp_idx = -1
 
@@ -120,37 +120,40 @@ class View_Friends_Posts(tk.Frame):
                 request_frame = tk.Frame(self, bd=2, relief=tk.RAISED, padx=10, pady=10, width=300)
                 request_frame.pack(fill="x", pady=5, padx=20)
 
-                # Load and display the profile photo
-                img = load_image(self.profile_photo)
-                if img:
-                    img_tk = ImageTk.PhotoImage(img)
-                    photo_label = tk.Label(request_frame, image=img_tk)
-                    photo_label.image = img_tk  # Keep a reference
-                    photo_label.grid(row=0, column=0, padx=5, pady=5)
+                new_post = Post(request_frame, "ahmed.ibrahim@gmail.com")
+                new_post.view_posts()
 
-                # Create a frame for the text details
-                details_frame = tk.Frame(request_frame)
-                details_frame.grid(row=0, column=1, padx=10, sticky="w")
-
-                # Display the post content
-                name_label = tk.Label(details_frame, text=post["content"]["text"], font=("Helvetica", 12, "bold"))
-                name_label.pack(anchor="w")
-
-                # Display the number of likes or other reactions
-                random_param_label = tk.Label(details_frame, text=post["reactions"]["likes"], font=("Helvetica", 10))
-                random_param_label.pack(anchor="w")
-
-                # Add buttons for accepting and declining the post
-                button_frame = tk.Frame(request_frame)
-                button_frame.grid(row=0, column=2, sticky="e")
-
-                # Create Accept button
-                accept_button = tk.Button(button_frame, text="Accept")
-                accept_button.pack(side="top", padx=5, pady=2)
-
-                # Create Decline button
-                decline_button = tk.Button(button_frame, text="Decline")
-                decline_button.pack(side="top", padx=5, pady=2)
+                # # Load and display the profile photo
+                # img = load_image(self.profile_photo)
+                # if img:
+                #     img_tk = ImageTk.PhotoImage(img)
+                #     photo_label = tk.Label(request_frame, image=img_tk)
+                #     photo_label.image = img_tk  # Keep a reference
+                #     photo_label.grid(row=0, column=0, padx=5, pady=5)
+                #
+                # # Create a frame for the text details
+                # details_frame = tk.Frame(request_frame)
+                # details_frame.grid(row=0, column=1, padx=10, sticky="w")
+                #
+                # # Display the post content
+                # name_label = tk.Label(details_frame, text=post["content"]["text"], font=("Helvetica", 12, "bold"))
+                # name_label.pack(anchor="w")
+                #
+                # # Display the number of likes or other reactions
+                # random_param_label = tk.Label(details_frame, text=post["reactions"]["likes"], font=("Helvetica", 10))
+                # random_param_label.pack(anchor="w")
+                #
+                # # Add buttons for accepting and declining the post
+                # button_frame = tk.Frame(request_frame)
+                # button_frame.grid(row=0, column=2, sticky="e")
+                #
+                # # Create Accept button
+                # accept_button = tk.Button(button_frame, text="Accept")
+                # accept_button.pack(side="top", padx=5, pady=2)
+                #
+                # # Create Decline button
+                # decline_button = tk.Button(button_frame, text="Decline")
+                # decline_button.pack(side="top", padx=5, pady=2)
 
                 # Update displayed posts count
                 self.displayed_posts += 1
