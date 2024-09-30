@@ -35,53 +35,58 @@ from datetime import datetime
 #     return matching_users
 
 
+import tkinter as tk
+from datetime import datetime
+from tkinter import filedialog, simpledialog
+from PIL import Image, ImageTk
+import json
+import os
 
 class Post:
-    def __init__(self, root):
+    def __init__(self, root, user_email):
+        self.user_email = user_email.get("mail")
         self.root = root
-        self.root.geometry("500x600")
+        self.root.geometry("500x450")
         self.root.configure(bg="#2C3E50")
-        self.likes = 0
-        self.liked_by = []
-        self.comments = []
 
-        self.post_text = tk.StringVar()  # To store the entered text
-        self.comment_text = tk.StringVar()  # To store the comment text
+        self.post_text = tk.StringVar()
+        self.uploaded_image_path = None
 
-        # Profile frame setup
         profile_frame = tk.Frame(self.root, bg="#34495E", padx=10, pady=10)
         profile_frame.pack(fill=tk.X, pady=(10, 0))
 
-        # Profile image label
-        self.profile_img_label = tk.Label(profile_frame, bg="#34495E")
-        self.profile_img_label.grid(row=0, column=0, padx=10)
+        self.profile_image_canvas = tk.Canvas(profile_frame, width=50, height=50, bg="#34495E", highlightthickness=0)
+        self.profile_image_canvas.grid(row=0, column=0, padx=10)
 
-        # Load profile image with corrected path
         self.load_profile_image(r"C:\Users\Abdel\PycharmProjects\sicProj\img\book.jpg")
 
-        # Profile name label with new font style and color
-        name_label = tk.Label(profile_frame, text="Farha Ghallab", font=("Arial", 14, "bold"), bg="#34495E", fg="white")
-        name_label.grid(row=0, column=1, sticky='w')
+        self.name_label = tk.Label(profile_frame, text="", font=("Arial", 14, "bold"), bg="#34495E", fg="white")
+        self.name_label.grid(row=0, column=1, sticky='w')
 
-        post_frame = tk.Frame(self.root, bd=2, relief=tk.FLAT, padx=10, pady=10, bg="#ECF0F1")
-        post_frame.pack(pady=10, fill=tk.BOTH, expand=True)
+        self.post_frame = tk.Frame(self.root, bd=2, relief=tk.FLAT, padx=10, pady=10, bg="#ECF0F1")
+        self.post_frame.pack(pady=10, fill=tk.BOTH, expand=True)
 
-        # Post text entry
-        self.text_entry = tk.Entry(post_frame, textvariable=self.post_text, font=("Arial", 12), fg="#7F8C8D")
-        self.text_entry.insert(0, "Write post here...")  # Default hint text
+        self.text_entry = tk.Entry(self.post_frame, textvariable=self.post_text, font=("Arial", 12), fg="#7F8C8D")
+        self.text_entry.insert(0, "Write post here...")
         self.text_entry.bind("<FocusIn>", self.clear_placeholder)
         self.text_entry.bind("<FocusOut>", self.add_placeholder)
         self.text_entry.config(relief=tk.FLAT, bg="#ECF0F1", highlightbackground="#BDC3C7", highlightthickness=1)
         self.text_entry.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.image_label = tk.Label(post_frame, bg="#ECF0F1")
+        self.image_label = tk.Label(self.post_frame, bg="#ECF0F1")
         self.image_label.pack(pady=10)
+
+        self.remove_image_button = tk.Button(self.root, text="Remove Image", command=self.remove_image,
+                                             bg="#E74C3E", fg="white", font=("Arial", 10), relief=tk.FLAT,
+                                             cursor="hand2", borderwidth=0)
+        self.remove_image_button.pack(pady=5)
+        self.remove_image_button.pack_forget()
 
         icon_frame = tk.Frame(self.root, bg="#2C3E50")
         icon_frame.pack(pady=5)
 
         self.upload_icon = Image.open(r"C:\Users\Abdel\PycharmProjects\sicProj\img\camera.jpg")
-        self.upload_icon = self.upload_icon.resize((50, 50))  # Resize photo
+        self.upload_icon = self.upload_icon.resize((50, 50))
         self.upload_icon_photo = ImageTk.PhotoImage(self.upload_icon)
 
         upload_button = tk.Button(icon_frame, image=self.upload_icon_photo, command=self.upload_image, bg="#34495E",
@@ -92,79 +97,56 @@ class Post:
                                 font=("Arial", 12), relief=tk.FLAT, cursor="hand2", borderwidth=0)
         post_button.pack(pady=10, ipadx=10, ipady=5)
 
-        # Likes Display
-        self.likes_label = tk.Label(self.root, text="Likes: 0", font=("Arial", 12), bg="#2C3E50", fg="white")
-        self.likes_label.pack(pady=10)
+        self.set_user_profile(user_email)
 
-        like_button = tk.Button(self.root, text="Like", command=lambda: self.like("user@example.com"),
-                                bg="#1ABC9C", fg="white", font=("Arial", 12), relief=tk.FLAT, cursor="hand2",
-                                borderwidth=0)
-        like_button.pack(pady=5)
+    def load_profile_image(self, image_path):
+        try:
+            img = Image.open(image_path)
+            img = img.resize((50, 50), Image.LANCZOS)
+            img = ImageTk.PhotoImage(img)
+            self.profile_image_canvas.create_image(25, 25, image=img)
+            self.profile_image_canvas.image = img
+        except Exception as e:
+            print(f"Error loading image: {e}")
 
-        # Comments Section
-        comments_label = tk.Label(self.root, text="Comments:", font=("Arial", 14, "bold"), bg="#2C3E50", fg="white")
-        comments_label.pack(pady=10)
+    def set_user_profile(self, user_email):
+        user_details = self.get_user_details(user_email)
+        self.name_label.config(text=user_details.get("username", "Unknown User"))
+        profile_image_path = user_details.get("profile_image", None)
+        if profile_image_path:
+            self.load_profile_image(profile_image_path)
+        else:
+            self.load_profile_image(r"C:\Users\Abdel\PycharmProjects\sicProj\img\book.jpg")
 
-        self.comment_entry = tk.Entry(self.root, textvariable=self.comment_text, font=("Arial", 12), fg="#7F8C8D")
-        self.comment_entry.insert(0, "Write a comment...")  # Default hint text
-        self.comment_entry.bind("<FocusIn>", self.clear_comment_placeholder)
-        self.comment_entry.bind("<FocusOut>", self.add_comment_placeholder)
-        self.comment_entry.pack(fill=tk.BOTH, padx=10, pady=5)
-
-        comment_button = tk.Button(self.root, text="Add Comment", command=self.add_comment, bg="#1ABC9C", fg="white",
-                                   font=("Arial", 12), relief=tk.FLAT, cursor="hand2", borderwidth=0)
-        comment_button.pack(pady=5)
-
-        self.comments_display = tk.Frame(self.root, bg="#ECF0F1")
-        self.comments_display.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
-
-        # Buttons to sort comments
-        sort_frame = tk.Frame(self.root, bg="#2C3E50")
-        sort_frame.pack(pady=5)
-
-        sort_likes_button = tk.Button(sort_frame, text="Sort Comments by Likes", command=self.sort_comments_by_likes,
-                                      bg="#1ABC9C", fg="white", font=("Arial", 12), relief=tk.FLAT, cursor="hand2",
-                                      borderwidth=0)
-        sort_likes_button.pack(side=tk.LEFT, padx=5)
-
-        sort_date_button = tk.Button(sort_frame, text="Sort Comments by Date", command=self.sort_comments_by_date,
-                                     bg="#1ABC9C", fg="white", font=("Arial", 12), relief=tk.FLAT, cursor="hand2",
-                                     borderwidth=0)
-        sort_date_button.pack(side=tk.LEFT, padx=5)
-
-    def load_profile_image(self, image_path: str):
-        img = Image.open(image_path)
-        img = img.resize((50, 50))
-        self.profile_img = ImageTk.PhotoImage(img)
-        self.profile_img_label.config(image=self.profile_img)
-        self.profile_img_label.image = self.profile_img
+    def get_user_details(self, user_email):
+        file_name = "users.json"
+        if os.path.exists(file_name):
+            with open(file_name, 'r') as f:
+                data = json.load(f)
+            user_details = next((item for item in data if item["Email"] == user_email["mail"]), {})
+            return {
+                "username": user_details.get("username", "Unknown User"),
+                "profile_image": user_details.get("profile_image", None)
+            }
+        return {"username": "Unknown User", "profile_image": None}
 
     def clear_placeholder(self, event):
         if self.text_entry.get() == "Write post here...":
             self.text_entry.delete(0, tk.END)
-            self.text_entry.config(fg="black")  #
+            self.text_entry.config(fg="black")
 
     def add_placeholder(self, event):
-        if not self.text_entry.get().strip():
+        if self.text_entry.get() == "":
             self.text_entry.insert(0, "Write post here...")
             self.text_entry.config(fg="#7F8C8D")
 
-    def clear_comment_placeholder(self, event):
-        if self.comment_entry.get() == "Write a comment...":
-            self.comment_entry.delete(0, tk.END)
-            self.comment_entry.config(fg="black")
-
-    def add_comment_placeholder(self, event):
-        if not self.comment_entry.get().strip():
-            self.comment_entry.insert(0, "Write a comment...")
-            self.comment_entry.config(fg="#7F8C8D")
-
     def upload_image(self):
         image_path = filedialog.askopenfilename(title="Select an image",
-                                                filetypes=[("Image files", ".png;.jpg;*.jpeg")])
+                                                filetypes=[("Image files", "*.png;*.jpg;*.jpeg")])
         if image_path:
             self.display_uploaded_image(image_path)
             self.uploaded_image_path = image_path
+            self.remove_image_button.pack()
 
     def display_uploaded_image(self, image_path):
         uploaded_img = Image.open(image_path)
@@ -172,92 +154,198 @@ class Post:
         self.uploaded_img = ImageTk.PhotoImage(uploaded_img)
         self.image_label.config(image=self.uploaded_img)
 
+    def remove_image(self):
+        self.image_label.config(image="")
+        self.uploaded_image_path = None
+        self.remove_image_button.pack_forget()
+
     def post_content(self):
         post_text = self.post_text.get().strip()
         image_path = getattr(self, 'uploaded_image_path', None)
+        user_email = self.user_email
+
         if post_text and post_text != "Write post here...":
+            user_details = self.get_user_details(user_email)
             post_data = {
                 "content": {
                     "text": post_text,
                     "image": image_path,
-                    "date": datetime.now().strftime("%d-%m-%Y"),
+                    "date": datetime.now().strftime("%d-%m-%Y %H:%M"),
+                    "likes": 0,
+                    "comments": []
                 },
-                "likes": self.likes,
-                "liked_by": self.liked_by,
-                "comments": self.comments,
+                "user": {
+                    "username": user_details.get("username", "Unknown User"),
+                    "profile_image": user_details.get("profile_image", r"C:\Users\Abdel\PycharmProjects\sicProj\img\book.jpg")
+                }
             }
-            self.save_post_to_json(post_data)
+            self.save_post_to_json(post_data, user_email)
+            self.view_posts()
         else:
             print("No text entered for the post.")
 
-    def save_post_to_json(self, post_data):
+    def save_post_to_json(self, post_data, user_email):
         file_name = "posts.json"
         if os.path.exists(file_name):
             with open(file_name, 'r') as f:
                 data = json.load(f)
         else:
             data = {}
-
-        user_email = "unknown"
 
         if user_email not in data:
             data[user_email] = []
 
-
         post_id = len(data[user_email]) + 1
         post_data["id"] = post_id
 
-
         data[user_email].append(post_data)
-
 
         with open(file_name, 'w') as f:
             json.dump(data, f, indent=4)
 
-        print(f"Post saved to {file_name}")
+    def view_posts(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
+        sort_buttons_frame = tk.Frame(self.root, bg="#34495E")
+        sort_buttons_frame.pack(fill=tk.X)
 
-    def like(self, user_email):
-        """Like or unlike the post based on the user's previous action."""
-        if user_email in self.liked_by:
-            self.likes -= 1
-            self.liked_by.remove(user_email)
-            print(f"{user_email} unliked the post.")
+        sort_time_asc_button = tk.Button(sort_buttons_frame, text="Sort by Time Ascending", command=lambda: self.sort_posts_by_time(ascending=True),
+                                          bg="#1ABC9C", fg="white", relief=tk.FLAT)
+        sort_time_asc_button.pack(side=tk.LEFT, padx=5, pady=5)
+
+        sort_time_desc_button = tk.Button(sort_buttons_frame, text="Sort by Time Descending", command=lambda: self.sort_posts_by_time(ascending=False),
+                                           bg="#1ABC9C", fg="white", relief=tk.FLAT)
+        sort_time_desc_button.pack(side=tk.LEFT, padx=5, pady=5)
+
+        sort_reactions_button = tk.Button(sort_buttons_frame, text="Sort by Reactions", command=self.sort_posts_by_reactions,
+                                          bg="#1ABC9C", fg="white", relief=tk.FLAT)
+        sort_reactions_button.pack(side=tk.LEFT, padx=5, pady=5)
+
+        self.canvas = tk.Canvas(self.root, bg="#ECF0F1")
+        self.scrollbar = tk.Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = tk.Frame(self.canvas)
+
+        self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        self.scrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side="left", fill="both", expand=True)
+
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        file_name = "posts.json"
+        if os.path.exists(file_name):
+            with open(file_name, 'r') as f:
+                data = json.load(f)
+
+            posts = []
+            for user_posts in data.values():
+                posts.extend(user_posts)
+
+            valid_posts = [post for post in posts if isinstance(post, dict) and "content" in post and "date" in post["content"]]
+
+            valid_posts.sort(key=lambda x: x["content"]["date"], reverse=True)
+
+            for post in valid_posts:
+                self.display_post(post)
+
+    def display_post(self, post):
+        post_frame = tk.Frame(self.scrollable_frame, bd=2, relief=tk.GROOVE, padx=10, pady=10, bg="#ECF0F1")
+        post_frame.pack(pady=10, fill=tk.BOTH, expand=True)
+
+        post_label = tk.Label(post_frame, text=post["content"]["text"], font=("Arial", 12), bg="#ECF0F1", fg="black")
+        post_label.pack(pady=(0, 10))
+
+        if post["content"].get("image"):
+            try:
+                post_image = Image.open(post["content"]["image"])
+                post_image = post_image.resize((100, 100))
+                post_image = ImageTk.PhotoImage(post_image)
+                image_label = tk.Label(post_frame, image=post_image, bg="#ECF0F1")
+                image_label.image = post_image
+                image_label.pack(pady=5)
+            except FileNotFoundError:
+                print("Image file not found.")
+
+        date_label = tk.Label(post_frame, text=post["content"]["date"], font=("Arial", 8), bg="#ECF0F1", fg="gray")
+        date_label.pack(pady=5)
+
+        likes_label = tk.Label(post_frame, text=f"Likes: {post['content']['likes']}", font=("Arial", 10, "bold"),
+                               bg="#ECF0F1", fg="#2980B9")
+        likes_label.pack(pady=5)
+
+        like_button = tk.Button(post_frame, text="Like", bg="gray", fg="white",
+                                command=lambda: self.toggle_like(post, likes_label))
+        like_button.pack(pady=5)
+
+        comment_frame = tk.Frame(post_frame, bg="#ECF0F1")
+        comment_frame.pack(fill=tk.BOTH)
+
+        comment_entry = tk.Entry(comment_frame, font=("Arial", 10), width=40)
+        comment_entry.pack(side=tk.LEFT, padx=5)
+
+        comment_button = tk.Button(comment_frame, text="Comment",
+                                   command=lambda: self.add_comment(post["id"], comment_entry.get()), bg="#2980B9",
+                                   fg="white")
+        comment_button.pack(side=tk.LEFT)
+
+        if post["content"]["comments"]:
+            for comment in post["content"]["comments"]:
+                comment_label = tk.Label(post_frame, text=f"{comment['username']}: {comment['text']} - {comment['date']}",
+                                         font=("Arial", 10), bg="#ECF0F1", fg="black")
+                comment_label.pack(anchor="w")
+
+                reply_button = tk.Button(post_frame, text="Reply", command=lambda c=comment: self.reply_to_comment(c, post["id"]), bg="#2980B9", fg="white")
+                reply_button.pack(anchor="w")
+
+                if 'replies' in comment:
+                    for reply in comment['replies']:
+                        reply_label = tk.Label(post_frame, text=f"  {reply['username']}: {reply['text']} - {reply['date']}",
+                                               font=("Arial", 10), bg="#ECF0F1", fg="gray")
+                        reply_label.pack(anchor="w")
+
+    def add_comment(self, post_id, comment_text):
+        if comment_text:
+            file_name = "posts.json"
+            if os.path.exists(file_name):
+                with open(file_name, 'r') as f:
+                    data = json.load(f)
+
+                for user_posts in data.get(self.user_email, []):
+                    if user_posts["id"] == post_id:
+                        comment_data = {
+                            "username": self.get_user_details(self.user_email)["username"],
+                            "text": comment_text,
+                            "date": datetime.now().strftime("%d-%m-%Y %H:%M"),
+                            "likes": 0,
+                            "liked_by": [],
+                            "replies": []
+                        }
+                        user_posts["content"]["comments"].append(comment_data)
+                        break
+
+                with open(file_name, 'w') as f:
+                    json.dump(data, f, indent=4)
+
+            self.view_posts()
         else:
-            self.likes += 1
-            self.liked_by.append(user_email)
-            print(f"{user_email} liked the post.")
+            print("No comment entered.")
 
-        # Update likes label in GUI
-        self.likes_label.config(text=f"Likes: {self.likes}")
-
-
-
-    def add_comment(self):
-        """Add a comment to the post."""
-        comment_text = self.comment_text.get().strip()  # Get comment text
-        if comment_text and comment_text != "Write a comment...":
-            user_email = "user@example.com"  # Replace with the actual user email
-            comment = {
-                "user": user_email,
-                "content": {
-                    "text": comment_text,
-                    "date": datetime.now().strftime("%d-%m-%Y")
-                },
-                "likes": 0,
-                "liked_by": [],
-                "replies": []  # Initialize replies for nested comments
-            }
-            self.comments.append(comment)
-            print(f"Comment by {user_email} added: {comment_text}")
-            self.save_comments_to_json()  # Save comments to JSON
-            self.update_comments_display()  # Update the GUI to show the new comment
-            self.comment_entry.delete(0, tk.END)  # Clear the comment entry field
+    def toggle_like(self, post, likes_label):
+        if post["content"]["likes"] % 2 == 0:
+            post["content"]["likes"] += 1
+            likes_label.config(text=f"Likes: {post['content']['likes']}")
+            likes_label.master.children['!button'].config(bg="blue")
         else:
-            print("No text entered for the comment.")
+            post["content"]["likes"] -= 1
+            likes_label.config(text=f"Likes: {post['content']['likes']}")
+            likes_label.master.children['!button'].config(bg="gray")
 
-    def save_comments_to_json(self):
+        self.save_posts()
 
+    def save_posts(self):
         file_name = "posts.json"
         if os.path.exists(file_name):
             with open(file_name, 'r') as f:
@@ -265,152 +353,64 @@ class Post:
         else:
             data = {}
 
-        user_email = "unknown"
-        post_id = 1
+        for user_posts in data.values():
+            for post in user_posts:
+                if post["id"] == post["id"]:
+                    post["content"]["likes"] = post["content"]["likes"]
 
-        if user_email in data:
-            for post in data[user_email]:
-                if post['id'] == post_id:  # Find the specific post
-                    post['comments'] = self.comments
-                    break
-
-        # Write updated data back to the JSON
         with open(file_name, 'w') as f:
             json.dump(data, f, indent=4)
 
-        print(f"Comments updated in {file_name}")
-
-    def update_comments_display(self):
-
-        # Clear current display
-        for widget in self.comments_display.winfo_children():
-            widget.destroy()
-
-        for comment in self.comments:
-
-            comment_frame = tk.Frame(self.comments_display, bg="#ECF0F1")
-            comment_frame.pack(fill=tk.X)
-
-
-            comment_display = f"{comment['user']} - {comment['content']['text']} (Date: {comment['content']['date']}) Likes: {comment['likes']}"
-
-
-            label = tk.Label(comment_frame, text=comment_display, bg="#ECF0F1")
-            label.pack(side=tk.LEFT, padx=5)
-
-
-            like_button = tk.Button(comment_frame, text="Like", command=lambda c=comment: self.like_comment(c),
-                                    bg="#1ABC9C", fg="white")
-            like_button.pack(side=tk.LEFT, padx=5)
-
-            # Create reply button for each comment
-            reply_button = tk.Button(comment_frame, text="Reply", command=lambda c=comment: self.reply_to_comment(c),
-                                     bg="#1ABC9C", fg="white")
-            reply_button.pack(side=tk.LEFT, padx=5)
-
-            # Display replies if any
-            for reply in comment['replies']:
-                reply_frame = tk.Frame(comment_frame, bg="#ECF0F1")
-                reply_frame.pack(fill=tk.X, padx=(20, 0))  # Indent replies
-
-                reply_display = f"   Reply from {reply['user']}: {reply['content']['text']} (Date: {reply['content']['date']}) Likes: {reply['likes']}"
-                reply_label = tk.Label(reply_frame, text=reply_display, bg="#ECF0F1")
-                reply_label.pack(side=tk.LEFT, padx=5)
-
-                # Create like button for each reply
-                reply_like_button = tk.Button(reply_frame, text="Like", command=lambda r=reply: self.like_reply(r),
-                                              bg="#1ABC9C", fg="white")
-                reply_like_button.pack(side=tk.LEFT, padx=5)
-
-                # Create reply button for each reply
-                reply_reply_button = tk.Button(reply_frame, text="Reply",
-                                               command=lambda r=reply: self.reply_to_reply(r), bg="#1ABC9C", fg="white")
-                reply_reply_button.pack(side=tk.LEFT, padx=5)
-
-
-
-    def like_comment(self, comment):
-        """Like or unlike a specific comment."""
-        if comment in self.liked_by:
-            comment['likes'] -= 1
-            comment['liked_by'].remove("user@example.com")
-            print(f"{comment['user']} unliked the comment.")
-        else:
-            comment['likes'] += 1
-            comment['liked_by'].append("user@example.com")
-            print(f"{comment['user']} liked the comment.")
-
-        self.update_comments_display()
-
-    def reply_to_comment(self, comment):
-        """Prompt for reply text and add it to the specified comment."""
+    def reply_to_comment(self, comment, post_id):
         reply_text = simpledialog.askstring("Reply", "Enter your reply:")
         if reply_text:
             reply = {
-                "user": "user@example.com",
-                "content": {
-                    "text": reply_text,
-                    "date": datetime.now().strftime("%d-%m-%Y"),
-                },
-                "likes": 0,
-                "liked_by": [],
-                "replies": []
+                "username": self.get_user_details(self.user_email)["username"],
+                "text": reply_text,
+                "date": datetime.now().strftime("%d-%m-%Y %H:%M"),
             }
             comment['replies'].append(reply)
-            print(f"Reply added to comment by {comment['user']}.")
+            self.save_posts()
+            self.view_posts()
 
-            self.save_comments_to_json()
-            self.update_comments_display()
+    def sort_posts_by_time(self, ascending=True):
+        file_name = "posts.json"
+        if os.path.exists(file_name):
+            with open(file_name, 'r') as f:
+                data = json.load(f)
 
-    def like_reply(self, reply):
-        """Like or unlike a specific reply."""
-        if reply in self.liked_by:
-            reply['likes'] -= 1
-            reply['liked_by'].remove("user@example.com")
-            print(f"{reply['user']} unliked the reply.")
-        else:
-            reply['likes'] += 1
-            reply['liked_by'].append("user@example.com")
-            print(f"{reply['user']} liked the reply.")
+            all_posts = []
+            for user_posts in data.values():
+                all_posts.extend(user_posts)
 
-        self.update_comments_display()
+            sorted_posts = sorted(all_posts, key=lambda x: x['content']['date'], reverse=not ascending)
 
-    def reply_to_reply(self, reply):
-        """Prompt for reply text and add it to the specified reply."""
-        reply_text = simpledialog.askstring("Reply", "Enter your reply:")
-        if reply_text:
-            reply_reply = {
-                "user": "user@example.com",
-                "content": {
-                    "text": reply_text,
-                    "date": datetime.now().strftime("%d-%m-%Y"),
-                },
-                "likes": 0,
-                "liked_by": []
-            }
+            self.display_sorted_posts(sorted_posts)
 
-            if 'replies' not in reply:
-                reply['replies'] = []
+    def sort_posts_by_reactions(self):
+        file_name = "posts.json"
+        if os.path.exists(file_name):
+            with open(file_name, 'r') as f:
+                data = json.load(f)
 
-            reply['replies'].append(reply_reply)
-            print(f"Reply added to reply by {reply['user']}.")
+            all_posts = []
+            for user_posts in data.values():
+                all_posts.extend(user_posts)
 
-            self.save_comments_to_json()
-            self.update_comments_display()
+            sorted_posts = sorted(all_posts, key=lambda x: x['content']['likes'], reverse=True)
 
-    def sort_comments_by_likes(self, ascending=True):
-        """Sort comments based on the number of likes."""
-        self.comments.sort(key=lambda x: x['likes'], reverse=not ascending)
-        print(f"Comments sorted by likes in {'ascending' if ascending else 'descending'} order.")
-        self.update_comments_display()
+            self.display_sorted_posts(sorted_posts)
 
-    def sort_comments_by_date(self, ascending=True):
-        self.comments.sort(key=lambda x: datetime.strptime(x['content']['date'], "%d-%m-%Y"), reverse=not ascending)
-        print(f"Comments sorted by date in {'ascending' if ascending else 'descending'} order.")
-        self.update_comments_display()
+    def display_sorted_posts(self, sorted_posts):
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+
+        for post in sorted_posts:
+            self.display_post(post)
 
 
-# Run the app
-root = tk.Tk()
-app = Post(root)
-root.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    user_email = {"mail": "test@example.com"}
+    app = Post(root, user_email)
+    root.mainloop()

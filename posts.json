@@ -1,625 +1,121 @@
 {
-    "unknown": [
+    "mohamed@gmail.com": [
+        {
+            "id": 1,
+            "content": {
+                "text": "Hello World!",
+                "image": "C:/Users/Abdel/PycharmProjects/sicProj/img/post1.jpg",
+                "date": "30-09-2024 01:20",
+                "likes": 5,
+                "comments": [
+                    {
+                        "username": "Sara Khaled",
+                        "text": "Nice post!",
+                        "date": "30-09-2024 01:25",
+                        "likes": 1,
+                        "liked_by": [
+                            "sara.khaled89@yahoo.com"
+                        ],
+                        "replies": [
+                            {
+                                "username": "Mohamed",
+                                "text": "Thanks!",
+                                "date": "30-09-2024 01:30"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "user": {
+                "username": "Mohamed",
+                "profile_image": "C:/Users/Abdel/PycharmProjects/sicProj/img/user1.jpg"
+            }
+        }
+    ],
+    "sara.khaled89@yahoo.com": [
+        {
+            "id": 2,
+            "content": {
+                "text": "A beautiful day!",
+                "image": null,
+                "date": "30-09-2024 01:40",
+                "likes": 2,
+                "comments": []
+            },
+            "user": {
+                "username": "Sara",
+                "profile_image": "C:/Users/Abdel/PycharmProjects/sicProj/img/user2.jpg"
+            }
+        }
+    ],
+    "test@example.com": [
         {
             "content": {
-                "text": "jkjkjk",
-                "image": "C:/Users/farha/Downloads/No fuss snacks for March Madness.jpg",
-                "date": "27-09-2024"
-            },
-            "id": 1,
-            "comments": [
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "mml;nn",
-                        "date": "28-09-2024"
+                "text": "sdqwe",
+                "image": null,
+                "date": "30-09-2024 03:52",
+                "likes": 0,
+                "comments": [
+                    {
+                        "username": "Unknown User",
+                        "text": "lnlb",
+                        "date": "30-09-2024 03:54",
+                        "likes": 0,
+                        "liked_by": [],
+                        "replies": []
                     },
-                    "likes": 2,
-                    "liked_by": [
-                        "user@example.com",
-                        "user@example.com"
-                    ],
-                    "replies": [
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "mm",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 0,
-                            "liked_by": [],
-                            "replies": [
-                                {
-                                    "user": "user@example.com",
-                                    "content": {
-                                        "text": "mk",
-                                        "date": "28-09-2024"
-                                    },
-                                    "likes": 0,
-                                    "liked_by": []
-                                }
-                            ]
-                        },
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "ll",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 0,
-                            "liked_by": [],
-                            "replies": []
-                        }
-                    ]
-                }
-            ]
+                    {
+                        "username": "Unknown User",
+                        "text": "bb",
+                        "date": "30-09-2024 03:54",
+                        "likes": 0,
+                        "liked_by": [],
+                        "replies": []
+                    }
+                ]
+            },
+            "user": {
+                "username": "Unknown User",
+                "profile_image": null
+            },
+            "id": 1
         },
         {
             "content": {
-                "text": "heloo",
-                "image": "C:/Users/farha/Downloads/No fuss snacks for March Madness.jpg",
-                "date": "27-09-2024"
+                "text": "jjif",
+                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-01-01 034744.png",
+                "date": "30-09-2024 03:53",
+                "likes": 0,
+                "comments": [
+                    {
+                        "username": "Unknown User",
+                        "text": "llvlk",
+                        "date": "30-09-2024 03:58",
+                        "likes": 0,
+                        "liked_by": [],
+                        "replies": []
+                    }
+                ]
+            },
+            "user": {
+                "username": "Unknown User",
+                "profile_image": null
             },
             "id": 2
         },
         {
             "content": {
-                "text": "kjkjk",
+                "text": "b",
                 "image": null,
-                "date": "27-09-2024"
+                "date": "30-09-2024 03:53",
+                "likes": 0,
+                "comments": []
+            },
+            "user": {
+                "username": "Unknown User",
+                "profile_image": null
             },
             "id": 3
-        },
-        {
-            "content": {
-                "text": "alllooooo",
-                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-01-01 211634.png",
-                "date": "28-09-2024"
-            },
-            "id": 4
-        },
-        {
-            "content": {
-                "text": "allooo an 8er sora",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "id": 5
-        },
-        {
-            "content": {
-                "text": "hello collage",
-                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-05-18 125242.png",
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 6
-        },
-        {
-            "content": {
-                "text": "try",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 7
-        },
-        {
-            "content": {
-                "text": "how are you with circuits?",
-                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-05-18 125242.png",
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 8
-        },
-        {
-            "content": {
-                "text": "three points like basketball !",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 9
-        },
-        {
-            "content": {
-                "text": "hello friends",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 10
-        },
-        {
-            "content": {
-                "text": "mm",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 11
-        },
-        {
-            "content": {
-                "text": "what the **** ?!",
-                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-05-17 165236.png",
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 12
-        },
-        {
-            "content": {
-                "text": "looooooollllllllllll",
-                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-06-07 154841.png",
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "wwoooww",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 14,
-                    "liked_by": [
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com"
-                    ],
-                    "replies": [
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "!!",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 0,
-                            "liked_by": []
-                        }
-                    ]
-                },
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "circuits(BORING) !",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 21,
-                    "liked_by": [
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com"
-                    ],
-                    "replies": [
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "^.^",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 0,
-                            "liked_by": []
-                        }
-                    ]
-                }
-            ],
-            "id": 13
-        },
-        {
-            "content": {
-                "text": "i do not care about ur opinion",
-                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-06-01 191052.png",
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 14
-        },
-        {
-            "content": {
-                "text": "i do not care about ur opinion",
-                "image": "C:/Users/Abdel/OneDrive/Pictures/Screenshots/Screenshot 2024-06-01 191052.png",
-                "date": "28-09-2024"
-            },
-            "likes": 1,
-            "liked_by": [
-                "user@example.com"
-            ],
-            "comments": [
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "lllllllllllllol",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 13,
-                    "liked_by": [
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com"
-                    ],
-                    "replies": []
-                },
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "?!",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 20,
-                    "liked_by": [
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com",
-                        "user@example.com"
-                    ],
-                    "replies": [
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "wow",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 2,
-                            "liked_by": [
-                                "user@example.com",
-                                "user@example.com"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "gg",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 0,
-                    "liked_by": [],
-                    "replies": []
-                }
-            ],
-            "id": 15
-        },
-        {
-            "content": {
-                "text": "...",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 16
-        },
-        {
-            "content": {
-                "text": "...",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "good job",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 1,
-                    "liked_by": [
-                        "user@example.com"
-                    ],
-                    "replies": [
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "dd",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 1,
-                            "liked_by": [
-                                "user@example.com"
-                            ]
-                        },
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "ddddddddd",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 1,
-                            "liked_by": [
-                                "user@example.com"
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "id": 17
-        },
-        {
-            "content": {
-                "text": "...",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "good job",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 1,
-                    "liked_by": [
-                        "user@example.com"
-                    ],
-                    "replies": [
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "dd",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 8,
-                            "liked_by": [
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com"
-                            ]
-                        },
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "ddddddddd",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 17,
-                            "liked_by": [
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com",
-                                "user@example.com"
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "id": 18
-        },
-        {
-            "content": {
-                "text": "hi",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": "rrrrrrrrrrrrrrrrrrrrrrrrrrr",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 0,
-                    "liked_by": [],
-                    "replies": []
-                }
-            ],
-            "id": 19
-        },
-        {
-            "content": {
-                "text": "ss",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 20
-        },
-        {
-            "content": {
-                "text": "ss",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": ",,,",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 0,
-                    "liked_by": [],
-                    "replies": [
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": ",,,,",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 0,
-                            "liked_by": [],
-                            "replies": [
-                                {
-                                    "user": "user@example.com",
-                                    "content": {
-                                        "text": "ll",
-                                        "date": "28-09-2024"
-                                    },
-                                    "likes": 0,
-                                    "liked_by": []
-                                },
-                                {
-                                    "user": "user@example.com",
-                                    "content": {
-                                        "text": "ooooooooo",
-                                        "date": "28-09-2024"
-                                    },
-                                    "likes": 0,
-                                    "liked_by": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "user": "user@example.com",
-                    "content": {
-                        "text": ",,,",
-                        "date": "28-09-2024"
-                    },
-                    "likes": 0,
-                    "liked_by": [],
-                    "replies": [
-                        {
-                            "user": "user@example.com",
-                            "content": {
-                                "text": "mm",
-                                "date": "28-09-2024"
-                            },
-                            "likes": 0,
-                            "liked_by": [],
-                            "replies": [
-                                {
-                                    "user": "user@example.com",
-                                    "content": {
-                                        "text": "olmo",
-                                        "date": "28-09-2024"
-                                    },
-                                    "likes": 0,
-                                    "liked_by": []
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "id": 21
-        },
-        {
-            "content": {
-                "text": ",,",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 22
-        },
-        {
-            "content": {
-                "text": "mmm",
-                "image": null,
-                "date": "28-09-2024"
-            },
-            "likes": 0,
-            "liked_by": [],
-            "comments": [],
-            "id": 23
         }
     ]
 }
