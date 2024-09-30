@@ -1,0 +1,242 @@
+{
+  "ahmed.ibrahim@gmail.com": {
+    "friends": [
+      "mohamed.salah97@hotmail.com",
+      "ebrahimwork102@gmail.com",
+      "omar.tarek@hotmail.com"
+    ],
+    "friend requests": {
+      "received": [
+        "mohamed.salah97@hotmail.com",
+        "salma.mahmoud77@yahoo.com",
+        "rania.hakim@yahoo.com",
+        "ebrahimwork102@gmail.com",
+        "MohamedRafaat120@gmail.com",
+        "amira.fathy123@gmail.com",
+        "karim.hassan22@outlook.com",
+        "zeinab.ali@mail.com",
+        "tarek.ismail88@gmail.com",
+        "mona.saleh@yahoo.com",
+        "fouad.ali@hotmail.com",
+        "lamia.khaled@hotmail.com"
+      ],
+      "sent": {
+        "AbdelrahamSameeh123@gmail.com": "accepted",
+        "hany.mostafa@gmail.com": "accepted"
+      }
+    }
+  },
+  "omar.tarek@hotmail.com": {
+    "friends": [
+      "karim.hassan22@outlook.com",
+      "zeinab.ali@mail.com",
+      "tarek.ismail88@gmail.com",
+      "mona.saleh@yahoo.com",
+      "fouad.ali@hotmail.com"
+    ],
+    "friend requests": {
+      "received": [
+        "hany.mostafa@gmail.com",
+        "lamia.khaled@hotmail.com"
+      ],
+      "sent": {
+        "hany.mostafa@gmail.com": "accepted",
+        "lamia.khaled@hotmail.com": "declined",
+        "noha.samir@gmail.com": "accepted",
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "heba.saeed@yahoo.com": {
+    "friends": [
+      "nadia.adel90@gmail.com",
+      "omar.hesham23@outlook.com",
+      "salma.mahmoud77@yahoo.com",
+      "khaled.ibrahim@yahoo.com",
+      "rania.hakim@yahoo.com"
+    ],
+    "friend requests": {
+      "received": [
+        "khaled.ibrahim@yahoo.com",
+        "rania.hakim@yahoo.com"
+      ],
+      "sent": {
+        "mahmoud.youssef@gmail.com": "accepted",
+        "yasmin.elsayed@yahoo.com": "declined",
+        "samir.khaled@gmail.com": "accepted",
+        "ahmed.ibrahim@gmail.com": "declined"
+      }
+    }
+  },
+  "ebrahimwork102@gmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "pending"
+      }
+    }
+  },
+  "MohamedRafaat120@gmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "mohamed.salah97@hotmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "pending"
+      }
+    }
+  },
+  "amira.fathy123@gmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "karim.hassan22@outlook.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "zeinab.ali@mail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "tarek.ismail88@gmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "mona.saleh@yahoo.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "fouad.ali@hotmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "hany.mostafa@gmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "lamia.khaled@hotmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "noha.samir@gmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "declined"
+      }
+    }
+  },
+  "nadia.adel90@gmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "accepted"
+      }
+    }
+  },
+  "omar.hesham23@outlook.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "declined"
+      }
+    }
+  },
+  "salma.mahmoud77@yahoo.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "pending"
+      }
+    }
+  },
+  "khaled.ibrahim@yahoo.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "declined"
+      }
+    }
+  },
+  "rania.hakim@yahoo.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "pending"
+      }
+    }
+  },
+  "mahmoud.youssef@gmail.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "pending"
+      }
+    }
+  },
+  "yasmin.elsayed@yahoo.com": {
+    "friends": [],
+    "friend requests": {
+      "received": [],
+      "sent": {
+        "ahmed.ibrahim@gmail.com": "pending"
+      }
+    }
+  }
+}
