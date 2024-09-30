@@ -4,7 +4,7 @@ import json
 import math
 import subprocess
 import tkinter as tk
-from tkinter import font as tkFont , ttk
+from tkinter import font as tkFont , ttk , PhotoImage
 from tkinter import messagebox, Scrollbar ,filedialog
 from PIL import Image, ImageTk
 
@@ -38,7 +38,28 @@ width, height = max_width, max_height
 canvas = tk.Canvas(root, width=width, height=height)
 canvas.pack(fill="both", expand=True)
 
+class Stack:
+    def __init__(self):
+        self.items = []
 
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        return None
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+        return None
+
+    def size(self):
+        return len(self.items)
 
 def create_rounded_button_icon(canvas, x, y, width, height, icon=None, command=None, radius=25):
     button_id = canvas.create_polygon(
@@ -200,17 +221,162 @@ def create_gradient(canvas, width, height, start_color, end_color):
         canvas.create_line(x_start, y_start, x_end, y_end, fill=color)
 
 
+
+class Post:
+    def __init__(self, root):
+        self.root = root
+        self.root.configure(bg="#ECF0F1")  # Light Gray
+
+        self.post_text = tk.StringVar()  # To store the entered text
+
+        # Profile frame setup
+        profile_frame = tk.Frame(self.root, bg="#34495E", padx=10, pady=10)
+        profile_frame.pack(fill=tk.X, pady=(10, 0))
+
+        # Profile image canvas with a circular profile
+        self.profile_image_canvas = tk.Canvas(profile_frame, width=50, height=50, bg="#34495E", highlightthickness=0)
+        self.profile_image_canvas.grid(row=0, column=0, padx=10)
+
+        self.load_profile_image(r"C:\Users\Abdel\PycharmProjects\sicProj\img\book.jpg")
+
+        # Profile name label with new font style and color
+        name_label = tk.Label(profile_frame, text="Farha Ghallab", font=("Arial", 14, "bold"), bg="#34495E", fg="white")
+        name_label.grid(row=0, column=1, sticky='w')
+
+        post_frame = tk.Frame(self.root, bd=2, relief=tk.FLAT, padx=10, pady=10, bg="#ECF0F1")
+        post_frame.pack(pady=10, fill=tk.BOTH, expand=True)
+
+        self.text_entry = tk.Entry(post_frame, textvariable=self.post_text, font=("Arial", 12), fg="#7F8C8D")
+        self.text_entry.insert(0, "Write post here...")  # Default hint text
+        self.text_entry.bind("<FocusIn>", self.clear_placeholder)
+        self.text_entry.bind("<FocusOut>", self.add_placeholder)
+        self.text_entry.config(relief=tk.FLAT, bg="#ECF0F1", highlightbackground="#BDC3C7", highlightthickness=1)
+        self.text_entry.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        self.image_label = tk.Label(post_frame, bg="#ECF0F1")
+        self.image_label.pack(pady=10)
+
+        icon_frame = tk.Frame(self.root, bg="#2C3E50")
+        icon_frame.pack(pady=5)
+
+        self.upload_icon = Image.open(r"C:\Users\Abdel\PycharmProjects\sicProj\img\camera.jpg")
+        self.upload_icon = self.upload_icon.resize((50, 50))  # Resize photo
+        self.upload_icon_photo = ImageTk.PhotoImage(self.upload_icon)
+
+        upload_button = tk.Button(icon_frame, image=self.upload_icon_photo, command=self.upload_image, bg="#34495E",
+                                  fg="white", relief=tk.FLAT, cursor="hand2", borderwidth=0)
+        upload_button.pack(side=tk.LEFT, padx=5)
+
+        post_button = tk.Button(self.root, text="Post", command=self.post_content, bg="#1ABC9C", fg="white",
+                                font=("Arial", 12), relief=tk.FLAT, cursor="hand2", borderwidth=0)
+        post_button.pack(pady=10, ipadx=10, ipady=5)
+
+    def load_profile_image(self, image_path: str):
+        img = Image.open(image_path)
+        img = img.resize((50, 50))
+        self.profile_img = ImageTk.PhotoImage(img)
+
+
+
+
 # User profile page class
 class UserProfilePage:
     def __init__(self, canvas, user_data):
         self.canvas = canvas
         self.user_data = user_data
         self.create_widgets()
+        self.back_stack = Stack()      # Stack to track back navigation
+        self.forward_stack = Stack()   # Stack to track forward navigation
+        self.current_page = "Home"     # Start at home page
 
+        # Initialize the navigation bar
+        self.navigation_bar()
+
+    def navigation_bar(self):
+        # Create a frame for the navigation bar
+        nav_frame = tk.Frame(canvas, bg="#26609a")
+        nav_frame.pack(side=tk.TOP, fill=tk.X)
+
+        left_frame = tk.Frame(nav_frame, bg="#26609a")
+        left_frame.pack(side=tk.LEFT)
+
+        buttons_frame = tk.Frame(nav_frame, bg="#26609a")
+        buttons_frame.pack(expand=False)
+        # Back Button
+        back_button = tk.Button(left_frame, text="<-", command=self.go_back)
+        back_button.pack(side=tk.LEFT, padx=10)
+
+        # Forward Button
+        forward_button = tk.Button(left_frame, text="->", command=self.go_forward)
+        forward_button.pack(side=tk.LEFT, padx=10)
+
+        # Home Page Button
+        home_image = Image.open("F:/moh/python-projects/sicProj/assets/email.png")
+        home_img = home_image.resize((40, 40), Image.LANCZOS)
+        home_photo = ImageTk.PhotoImage(home_img)
+        home_button = tk.Button(buttons_frame, image=home_photo, anchor="center", command=self.go_home)
+        home_button.image = home_photo  # Keep a reference to avoid garbage collection
+        home_button.pack(side=tk.LEFT,padx=40)
+
+        # Friend Requests Page Button
+        freind_requests_image = Image.open("F:/moh/python-projects/sicProj/assets/email.png")
+        freind_requests_img = freind_requests_image.resize((40, 40), Image.LANCZOS)
+        freind_requests_photo = ImageTk.PhotoImage(freind_requests_img)
+        friend_requests_button = tk.Button(buttons_frame, image=freind_requests_photo, command=self.go_friend_requests)
+        friend_requests_button.image = freind_requests_photo  # Keep a reference
+        friend_requests_button.pack(side=tk.LEFT,padx=40)
+
+        # Profile Page Button
+
+        profile_page_image = Image.open("F:/moh/python-projects/sicProj/assets/email.png")
+        profile_page_img = profile_page_image.resize((40, 40), Image.LANCZOS)
+        profile_page_photo = ImageTk.PhotoImage(profile_page_img)
+        profile_page_button = tk.Button(buttons_frame, image=profile_page_photo, command=self.go_profile)
+        profile_page_button.image = profile_page_photo  # Keep a reference
+        profile_page_button.pack(side=tk.LEFT, padx=40)
+
+
+    def go_back(self):
+            if not self.back_stack.is_empty():
+                self.forward_stack.push(self.current_page)  # Push the current page to the forward stack
+                self.current_page = self.back_stack.pop()   # Go back to the previous page
+                self.update_page(self.current_page)         # Update UI to the previous page
+            else:
+                print("No previous page to go back to.")
+
+    def go_forward(self):
+        if not self.forward_stack.is_empty():
+            self.back_stack.push(self.current_page)  # Push the current page to the back stack
+            self.current_page = self.forward_stack.pop()  # Go forward to the next page
+            self.update_page(self.current_page)      # Update UI to the next page
+        else:
+            print("No next page to go forward to.")
+
+    def go_home(self):
+        # Before going home, add the current page to back_stack
+        self.back_stack.push(self.current_page)
+        self.forward_stack = Stack()  # Clear the forward stack on a new navigation
+        self.current_page = "Home"
+        self.update_page(self.current_page)
+
+    def go_friend_requests(self):
+        self.back_stack.push(self.current_page)
+        self.forward_stack = Stack()
+        self.current_page = "Friend Requests"
+        self.update_page(self.current_page)
+
+    def go_profile(self):
+        self.back_stack.push(self.current_page)
+        self.forward_stack = Stack()
+        self.current_page = "Profile"
+        self.update_page(self.current_page)
+
+    def update_page(self, page_name):
+        # Logic to update the UI to the corresponding page (you can replace this with your UI update logic)
+        print(f"Navigated to {page_name} page.")
     def create_widgets(self):
         # Create navigation bar
-        self.nav_bar = tk.Frame(self.canvas, bg='gray', height=50)
-        self.nav_bar_id = self.canvas.create_window(0, 0, anchor='nw', width=width, height=50, window=self.nav_bar)
+
 
         self.cover_frame = tk.Frame(self.canvas, bg='#ffffff',bd=0)
         self.cover_frame_id = self.canvas.create_window(width // 2 - 400, 50, anchor='nw', window=self.cover_frame)
@@ -298,7 +464,6 @@ class UserProfilePage:
                                 cursor="hand2")
         friend_label.pack(side="left", padx=10)
 
-
         def open_friend_profile(event):
             # Find friend's data from users list
             for f_img in users:
@@ -308,7 +473,7 @@ class UserProfilePage:
             else:
                 friend_data = None
 
-
+            # If friend_data is found, open the ReadOnlyProfilePage with friend_data
             if friend_data:
                 read_only_profile_page = ReadOnlyProfilePage(self.canvas, friend_data)
 
@@ -365,8 +530,7 @@ def login_page():
 class UserPage(UserProfilePage):
     def __init__(self, canvas, user_data):
         super().__init__(canvas, user_data)
-        if isinstance(self, UserProfilePage) and not isinstance(self, ReadOnlyProfilePage):
-            self.create_editing_methods()
+        self.create_editing_methods()
 
     def create_editing_methods(self):
         def edit_info():
@@ -461,20 +625,23 @@ class UserPage(UserProfilePage):
                                                    command=login_page)
         self.edit_profile_image_button.pack(fill='x', pady=5)
 
-        post = create_rounded_button(self.mid_frame,560,290,250,25,text="Whats in your mind?",
-                                     command=post,radius=60,bg_color="#76b5c5",text_color="#000000")
+        self.post = create_rounded_button(self.mid_frame, 560, 290, 250, 25, text="Whats in your mind?",
+                                              command=post, radius=60, bg_color="#76b5c5", text_color="#000000")
+
+
+
+
 
 
 class ReadOnlyProfilePage(UserProfilePage):
     def __init__(self, canvas, friend_data):
         self.canvas = canvas
         self.friend_data = friend_data
+        self.is_read_only = True
+        clear_canvas()
         self.create_widgets()
 
     def create_widgets(self):
-        # Create navigation bar
-        self.nav_bar = tk.Frame(self.canvas, bg='gray', height=50)
-        self.nav_bar_id = self.canvas.create_window(0, 0, anchor='nw', width=width, height=50, window=self.nav_bar)
 
         # Create cover photo
         self.cover_frame = tk.Frame(self.canvas, bg='#ffffff', bd=0)
@@ -520,9 +687,13 @@ class ReadOnlyProfilePage(UserProfilePage):
         self.age_label = tk.Label(self.left_frame, text=f"Age: {self.friend_data['Age']}")
         self.age_label.pack(pady=5)
 
-        self.mid_frame = self.create_scrollable_frame(x=width // 2 - 300, y=280, width=600, height=400, bg='white', title='Friends')
+        self.mid_frame = self.create_scrollable_frame(x=width // 2 - 300, y=280, width=600, height=400, bg='#ffffff', title='Friends')
         self.create_friends_frame()
 
+
+def clear_canvas():
+    canvas.delete("all")
+    create_gradient(canvas, width, height, start_color, end_color)
 
 
 def load_user_data(username):
