@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from FriendRequestsLogic import UserData, IncomingRequestsLogic, OutgoingRequestsLogic
-
+##
 # Function to load and resize an image
 def load_image(image_path, size=(60, 60)):
     try:
